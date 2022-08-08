@@ -1,0 +1,154 @@
+:root {
+    --white: #F4F0EB;
+    --grey: #888C90;
+    --light-grey: #D9D9D8;
+    --dark-grey: #363F47;
+    --blue: #9EC0D5;
+    --yellow: #F5B83D;
+    --red: #FF6B64;
+    --green: #B8E788;
+}
+
+/* DEFAULTS */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--blue);
+    width: 100%;
+}
+
+p {
+    font-family: rainyhearts, sans-serif;
+    font-size: 2em;
+    font-style: bold;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+
+/* LAYOUT */
+.container {
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: space-evenly;
+}
+
+
+/* LEFT PANNEL */
+aside {
+    width: 30%;
+    margin: 1em;
+    padding: 1em;
+    border: 2px solid var(--grey);
+    border-radius: 20px;
+    background-color: var(--white);
+    opacity: 0.8;
+    position: relative;
+}
+
+aside h2 {
+    font-family: rainyhearts, sans-serif;
+    font-size: 2em;
+    text-align: left;
+}
+
+header {
+    padding-bottom: 1em;
+}
+
+header h1 {
+    font-family: MonsterFriendFore, sans-serif;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+header h2 {
+    font-family: rainyhearts, sans-serif;
+    font-size: 2em;
+    text-align: center;
+}
+
+header hr {
+    margin-bottom: 1em;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding-top: 1em;
+}
+
+.controls img {
+    height: 4em;
+    padding-right: 1em;
+}
+
+.controls p {
+    font-size: 2.5em;
+}
+
+#start-btn {
+    position: absolute;
+    bottom: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.3em 0.3em;
+    color: var(--white);
+    font-family:  rainyhearts, sans-serif;
+    font-size: 2em;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid var(--white);
+    border-radius: 20px;
+    background-color: var(--blue);
+    cursor: pointer;
+}
+
+#start-btn:hover {
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    border-radius: 20px;
+    background-color: var(--white);
+}
+
+
+/* PLAYFIELD */
+#playfield {
+    width: 87vh;
+    height: 87vh;
+    margin: 1em;
+    padding: 1em;
+    border: 2px solid var(--grey);
+    border-radius: 20px;
+    background-color: var(--white);
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+
+.cell {
+}
+
+/* SPRITES */
+.player {
+    background: url('./images/kiki1.png') no-repeat center;
+    background-size: contain;
+}
+
+.snake-head {
+    background: url('./images/snake-head.png') no-repeat center;
+    background-size: contain;
+}
+

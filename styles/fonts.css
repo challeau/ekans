@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'MonsterFriendFore';
+    src: url('./fonts/MonsterFriendFore.ttf') format('truetype'),
+	 url('./fonts/MonsterFriendFore.woff2') format('woff2'),
+	 url('./fonts/MonsterFriendFore.woff') format('woff'),
+	 url('./fonts/MonsterFriendFore.otf') format('opentype'),
+	 url('./fonts/MonsterFriendFore.svg#MonsterFriendFore') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'rainyhearts';
+    src: url('./fonts/rainyhearts.ttf') format('truetype'),
+	 url('./fonts/rainyhearts.woff2') format('woff2'),
+	 url('./fonts/rainyhearts.woff') format('woff'),
+	 url('./fonts/rainyhearts.otf') format('opentype');
+	 url('./fonts/rainyhearts.svg#rainyhearts') format('svg'),
+    font-weight: normal;
+    font-style: normal;
+}

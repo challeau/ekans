@@ -1,11 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
+    <!-- General information -->
     <title>EKANS</title>
+    <meta name="description" content="A reversed snake game.">
+    <meta name="author" content="challeau">
+    <meta charset="utf-8" />
+    <base href=""/>
+
+    <!-- Open Graph settings -->
+    <meta property="og:title" content="EKANS">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://challeau.github.io/ekans">
+    <meta property="og:description" content="A reversed snake game.">
+    <meta property="og:image" content="./styles/favicon/favicon.ico">
+
+    <!-- Viewport settings -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Link the stylesheet -->
+    <link rel="stylesheet" href="./styles/style.css" />
+
+    <!-- Custom fonts -->
+    <link rel="stylesheet" href="./styles/fonts.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./styles/favicon/favicon.ico">
   </head>
+
   <body>
-    <h1>EKANS</h1>
-    <h2>The reversed snake game</h2>
+
+    <div class="container">
+      <aside>
+	<header>
+	  <h1>EKANS</h1>
+	  <h2>A reversed snake game.</h2>
+	  <hr/>
+	  <p>Help Kiki escape the mean snake that's trying to eat him!</p>
+	</header>
+	<h2>Controls:</h2>
+	<div class="controls">
+	  <img alt="arrow keys" src="./styles/images/arrows.png"/>
+	  <p>move</p>
+	</div>
+	<button id="start-btn">I'm ready!</button>
+      </aside>
+
+      <div id="playfield">
+      </div>
+    </div>
+    <footer>
+      <p id="credits">Made by challeau &euro;</p>
+    </footer>
+
+    <script src="./js/script.js"></script>
   </body>
 </html>
