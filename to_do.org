@@ -1,3 +1,14 @@
 * TODO calculate optimal number of squares for screen
 * TODO restart button
 * TODO hide grid before play
+
+
+* SNAKE MOVE
+** snake wrap
+*** TODO head direction
+*** TODO body direction
+*** TODO body wrap
+*** TODO limits
+** Path finding
+
+
