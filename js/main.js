@@ -5,68 +5,110 @@ let playfield = {
   rows: 10
 };
 
-let player = { pos: 15 };
+let player = { x: 5, y: 1 };
 
 let snake = {
-  head: { pos: 0 },
-  tail: { pos: 0 }
+  head: { x: 0, y: 0 },
+  tail: { x: 0, y: 0 },
+  body: []
 };
 
 let cells = [];
 
-// START/END GAME
+// GAME MECHANICS
+function checkCollisions() {
+  for (const playerClass of cells[player.y][player.x].classList){
+    if (/snake/.test(playerClass))
+      return(true);
+  }
+  if (cells[snake.head.y][snake.head.x].classList.contains('snake-tail')
+      || cells[snake.head.y][snake.head.x].classList.contains('snake-body'))
+    return (true);
+  return (false);
+}
+
 function displaySprites() {
-  cells[player.pos].classList.add('player');
-  snake.head.pos = getRandomNumber(0, playfield.columns * playfield.rows);
-  while (snake.head.pos === player.pos || snake.head.pos === player.pos - 1)
-    snake.head.pos = getRandomNumber(0, playfield.columns * playfield.rows);
-  snake.tail.pos = snake.head.pos - 1;
-  cells[snake.head.pos].classList.add('snake', 'snake-head');
-  cells[snake.tail.pos].classList.add('snake', 'snake-tail');
+  cells[player.y][player.x].classList.add('player');
+  snake.head.x = getRandomNumber(2, playfield.columns);
+  snake.head.y = getRandomNumber(0, playfield.rows);
+  snake.tail = { x: snake.head.x - 1, y: snake.head.y };
+  cells[snake.head.y][snake.head.x].classList.add('snake-head');
+  cells[snake.tail.y][snake.tail.x].classList.add('snake-tail');
+  snakeGrow('left');
+  if (checkCollisions() === true){
+    gameEnd();
+    gameStart();
+  }
 }
 
 function gameStart() {
-  for (let i = 0; i < playfield.rows * playfield.columns; i++) {
-    let div = document.createElement('div');
-    div.classList.add('cell');
-    div.dataset.index = i;
-    playfield.element.append(div);
-    cells.push(div);
+  for (let y = 0; y < playfield.rows; y++) {
+    cells.push([]);
+    for (let x = 0; x < playfield.columns; x++){
+      let div = document.createElement('div');
+      div.classList.add('cell');
+      div.dataset.x = x;
+      div.dataset.y = y;
+      playfield.element.append(div);
+      cells[y].push(div);
+    }
   }
   displaySprites();
 }
 
 function gameEnd() {
-  alert('HA! Loser.');
   playfield.element.innerHTML = '';
   cells = [];
-  player.pos = 15;
-  snake.head.pos = 0;
+  player = { x: 5, y: 1 };
+  snake.head = { x: 0, y: 0 };
 }
 
-
-function spriteMove(elem, target, class1, class2) {
-  cells[elem.pos].classList.remove(class1, class2);
-  elem.pos = target;
-  cells[target].classList.add(class1, class2);
+function spriteMove(sprite, targetX, targetY, spriteType) {
+  cells[sprite.y][sprite.x].className = 'cell';
+  sprite.x = targetX;
+  sprite.y = targetY;
+  cells[targetY][targetX].classList.add(spriteType);
 }
-
 
 // SNAKE
-function snakeGrow() {
-  cells[snake.tail.pos].classList.remove('snake', 'snake-tail');
-  cells[snake.tail.pos].classList.add('snake', 'snake-body');
-  snake.tail.pos -= 1;
-  cells[snake.tail.pos].classList.add('snake', 'snake-tail');
+function snakeGrow(direction) {
+  let tailTarget;
+  switch (direction){
+  case 'left':
+    tailTarget = {x: snake.tail.x - 1, y: snake.tail.y};
+    break;
+  case 'right':
+    tailTarget = {x: snake.tail.x + 1, y: snake.tail.y};
+    break;
+  case 'up':
+    tailTarget = {x: snake.tail.x, y: snake.tail.y - 1};
+    break;
+  case 'down':
+    tailTarget = {x: snake.tail.x, y: snake.tail.y + 1};
+    break;
+  }
+  let newBody = { x: snake.tail.x, y: snake.tail.y };
+  spriteMove(snake.tail, tailTarget.x, tailTarget.y, 'snake-tail');
+  cells[newBody.y][newBody.x].classList.add('cell', 'snake-body');
+  snake.body.push(newBody);
 }
 
-function snakeMove(target) {
-  if (cells[target].classList.contains('player'))
+function snakeMove(targetX, targetY, direction) {
+  let newBody = { x: snake.head.x, y: snake.head.y };
+  spriteMove(snake.head, targetX, targetY, 'snake-head');
+  let last = Number(snake.body.length -1);
+  cells[snake.body[last].y][snake.body[last].x].classList.remove('snake-body');
+  spriteMove(snake.tail, snake.body[last].x, snake.body[last].y, 'snake-tail');
+  cells[newBody.y][newBody.x].classList.add('cell', 'snake-body');
+  snake.body.pop();
+  snake.body.unshift(newBody);
+//  snakeOrient(direction);
+  if (checkCollisions() === true){
     gameEnd();
-  spriteMove(snake.head, target, 'snake', 'snake-head');
-  spriteMove(snake.tail, target - 1, 'snake', 'snake-tail');
+    alert('You killed Kiki.....');
+    gameStart();
+  }
 }
-
 
 // EVENTS
 const startBtn = document.getElementById('start-btn');
@@ -75,49 +117,25 @@ startBtn.addEventListener('click', () => {
     gameStart();
 });
 
-// document.onkeydown = function (event) {
-//   switch (event.keyCode) {
-//   case 37:		// left
-//     if (player.pos % playfield.columns !== 0)
-//       elemMove(player, player.pos - 1, 'player');
-//     break;
-//   case 38:		// up
-//     if (player.pos >= playfield.rows)
-//       elemMove(player, player.pos - playfield.columns, 'player');
-//     break;
-//   case 39:		// right
-//     if ((player.pos + 1) % playfield.columns !== 0)
-//       elemMove(player, player.pos + 1, 'player');
-//     break;
-//   case 40:		// down
-//     if (player.pos < playfield.rows * playfield.columns - playfield.rows)
-//       elemMove(player, player.pos + playfield.columns, 'player');
-//     break;
-//   case 32:
-//     snakeGrow('left');
-//   }
-// };
-
 document.onkeydown = function (event) {
   switch (event.keyCode) {
   case 37:		// left
-    if (snake.head.pos % playfield.columns !== 0)
-      snakeMove(snake.head.pos - 1);
+    if (snake.head.x > 0)
+      snakeMove(snake.head.x - 1, snake.head.y);
     break;
   case 38:		// up
-    if (snake.head.pos >= playfield.rows)
-      snakeMove(snake.head.pos - playfield.columns);
+    if (snake.head.y > 0)
+      snakeMove(snake.head.x, snake.head.y - 1);
     break;
   case 39:		// right
-    if ((snake.head.pos + 1) % playfield.columns !== 0)
-      snakeMove(snake.head.pos + 1);
+    if (snake.head.x < playfield.columns - 1)
+      snakeMove(snake.head.x + 1, snake.head.y);
     break;
   case 40:		// down
-    if (snake.head.pos < playfield.rows * playfield.columns - playfield.rows)
-      snakeMove(snake.head.pos + playfield.columns);
+    if (snake.head.y < playfield.rows - 1)
+      snakeMove(snake.head.x, snake.head.y + 1);
     break;
   case 32:
     snakeGrow('left');
   }
 };
-
