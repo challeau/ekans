@@ -2,11 +2,12 @@
 * TODO restart button
 * TODO hide grid before play
 
-
 * SNAKE MOVE
 ** snake wrap
-*** TODO head direction
-*** TODO body direction
+*** DONE head direction
+    CLOSED: [2022-08-10 Wed 10:00]
+*** DONE body direction
+    CLOSED: [2022-08-10 Wed 10:00]
 *** TODO body wrap
 *** TODO limits
 ** Path finding

@@ -61,6 +61,8 @@ function gameEnd() {
   cells = [];
   player = { x: 5, y: 1 };
   snake.head = { x: 0, y: 0 };
+  snake.body = [];
+  snake.head = { x: 0, y: 0 };
 }
 
 function spriteMove(sprite, targetX, targetY, spriteType) {
@@ -93,16 +95,20 @@ function snakeGrow(direction) {
   snake.body.push(newBody);
 }
 
+function snakeOrient(direction) {
+  cells[snake.head.y][snake.head.x].setAttribute('direction', direction);
+}
+
 function snakeMove(targetX, targetY, direction) {
   let newBody = { x: snake.head.x, y: snake.head.y };
   spriteMove(snake.head, targetX, targetY, 'snake-head');
-  let last = Number(snake.body.length -1);
+  let last = snake.body.length -1;
   cells[snake.body[last].y][snake.body[last].x].classList.remove('snake-body');
   spriteMove(snake.tail, snake.body[last].x, snake.body[last].y, 'snake-tail');
   cells[newBody.y][newBody.x].classList.add('cell', 'snake-body');
   snake.body.pop();
   snake.body.unshift(newBody);
-//  snakeOrient(direction);
+  snakeOrient(direction);
   if (checkCollisions() === true){
     gameEnd();
     alert('You killed Kiki.....');
@@ -121,21 +127,23 @@ document.onkeydown = function (event) {
   switch (event.keyCode) {
   case 37:		// left
     if (snake.head.x > 0)
-      snakeMove(snake.head.x - 1, snake.head.y);
+      snakeMove(snake.head.x - 1, snake.head.y, 'left');
     break;
   case 38:		// up
     if (snake.head.y > 0)
-      snakeMove(snake.head.x, snake.head.y - 1);
+      snakeMove(snake.head.x, snake.head.y - 1, 'up');
     break;
   case 39:		// right
     if (snake.head.x < playfield.columns - 1)
-      snakeMove(snake.head.x + 1, snake.head.y);
+      snakeMove(snake.head.x + 1, snake.head.y, 'right');
     break;
   case 40:		// down
     if (snake.head.y < playfield.rows - 1)
-      snakeMove(snake.head.x, snake.head.y + 1);
+      snakeMove(snake.head.x, snake.head.y + 1, 'down');
     break;
   case 32:
     snakeGrow('left');
   }
 };
+
+
