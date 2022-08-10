@@ -1,5 +1,5 @@
 // OBJECTS
-let playfield = {
+const playfield = {
   element: document.getElementById('playfield'),
   columns: 10,
   rows: 10
@@ -15,15 +15,15 @@ let snake = {
 
 let cells = [];
 
-// GAME MECHANICS
+// GAME MECHANICS  
+// check if the snake is colliding with kiki or itself
 function checkCollisions() {
-  for (const kikiClass of cells[kiki.y][kiki.x].classList){
-    if (/snake/.test(kikiClass))
-      return(true);
-  }
-  if (cells[snake.head.y][snake.head.x].classList.contains('snake-tail')
-      || cells[snake.head.y][snake.head.x].classList.contains('snake-body'))
-    return (true);
+  const snakeCoords = [snake.head, snake.body, snake.tail].flat();
+  if (snakeCoords.some(snakePart => checkCoords(snakePart, kiki)))
+    return (true);	// snake collision with Kiki
+  snakeCoords.shift();
+  if (snakeCoords.some(snakePart => checkCoords(snakePart, snake.head)))
+      return (true);	// snake collision with self
   return (false);
 }
 
@@ -61,8 +61,8 @@ function gameEnd() {
   cells = [];
   kiki = { x: 5, y: 1 };
   snake.head = { x: 0, y: 0 };
+  snake.tail = { x: 0, y: 0 };
   snake.body = [];
-  snake.head = { x: 0, y: 0 };
 }
 
 function spriteMove(sprite, targetX, targetY, spriteType) {
@@ -70,6 +70,11 @@ function spriteMove(sprite, targetX, targetY, spriteType) {
   sprite.x = targetX;
   sprite.y = targetY;
   cells[targetY][targetX].classList.add(spriteType);
+  if (checkCollisions() === true){
+    gameEnd();
+    alert('You killed Kiki.....');
+    gameStart();
+  }
 }
 
 // SNAKE
@@ -123,50 +128,48 @@ startBtn.addEventListener('click', () => {
     gameStart();
 });
 
-document.onkeydown = function (event) {
-  switch (event.keyCode) {
-  case 37:		// left
-    if (kiki.x > 0)
-      spriteMove(kiki, kiki.x - 1, kiki.y, 'kiki');
-    break;
-  case 38:		// up
-    if (kiki.y > 0)
-      spriteMove(kiki, kiki.x, kiki.y - 1, 'kiki');
-    break;
-  case 39:		// right
-    if (kiki.x < playfield.columns - 1)
-      spriteMove(kiki, kiki.x + 1, kiki.y, 'kiki');
-    break;
-  case 40:		// down
-    if (kiki.y < playfield.rows - 1)
-      spriteMove(kiki, kiki.x, kiki.y + 1, 'kiki');
-    break;
-  case 32:
-    snakeGrow('left');
-  }
-};
-
 // document.onkeydown = function (event) {
 //   switch (event.keyCode) {
 //   case 37:		// left
-//     if (snake.head.x > 0)
-//       snakeMove(snake.head.x - 1, snake.head.y, 'left');
+//     if (kiki.x > 0)
+//       spriteMove(kiki, kiki.x - 1, kiki.y, 'kiki');
 //     break;
 //   case 38:		// up
-//     if (snake.head.y > 0)
-//       snakeMove(snake.head.x, snake.head.y - 1, 'up');
+//     if (kiki.y > 0)
+//       spriteMove(kiki, kiki.x, kiki.y - 1, 'kiki');
 //     break;
 //   case 39:		// right
-//     if (snake.head.x < playfield.columns - 1)
-//       snakeMove(snake.head.x + 1, snake.head.y, 'right');
+//     if (kiki.x < playfield.columns - 1)
+//       spriteMove(kiki, kiki.x + 1, kiki.y, 'kiki');
 //     break;
 //   case 40:		// down
-//     if (snake.head.y < playfield.rows - 1)
-//       snakeMove(snake.head.x, snake.head.y + 1, 'down');
+//     if (kiki.y < playfield.rows - 1)
+//       spriteMove(kiki, kiki.x, kiki.y + 1, 'kiki');
 //     break;
 //   case 32:
 //     snakeGrow('left');
 //   }
 // };
 
-
+document.onkeydown = function (event) {
+  switch (event.keyCode) {
+  case 37:		// left
+    if (snake.head.x > 0)
+      snakeMove(snake.head.x - 1, snake.head.y, 'left');
+    break;
+  case 38:		// up
+    if (snake.head.y > 0)
+      snakeMove(snake.head.x, snake.head.y - 1, 'up');
+    break;
+  case 39:		// right
+    if (snake.head.x < playfield.columns - 1)
+      snakeMove(snake.head.x + 1, snake.head.y, 'right');
+    break;
+  case 40:		// down
+    if (snake.head.y < playfield.rows - 1)
+      snakeMove(snake.head.x, snake.head.y + 1, 'down');
+    break;
+  case 32:
+    snakeGrow('left');
+  }
+};

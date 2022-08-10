@@ -1,15 +1,19 @@
-* TODO calculate optimal number of squares for screen
-* TODO restart button
-* TODO hide grid before play
-
-* SNAKE MOVE
-** snake wrap
+* DONE hide grid before play
+  CLOSED: [2022-08-10 Wed 10:51]
+* TODO make snake fcts into snake methods
+* TODO make snake methods not rely on DOM
+* DONE make collisions not rely on DOM
+  CLOSED: [2022-08-10 Wed 12:03]
+* TODO make lets consts when appropriate
+* TODO give checkCollisions a more sensical return
+* TODO SNAKE MOVE
+** TODO snake wrap
 *** DONE head direction
     CLOSED: [2022-08-10 Wed 10:00]
 *** DONE body direction
     CLOSED: [2022-08-10 Wed 10:00]
 *** TODO body wrap
 *** TODO limits
-** Path finding
-
-
+** TODO Path finding
+* TODO calculate optimal number of squares for screen
+* TODO restart button
