@@ -1,4 +1,6 @@
 // OBJECTS
+let cells = [];
+
 const playfield = {
   element: document.getElementById('playfield'),
   columns: 10,
@@ -7,13 +9,49 @@ const playfield = {
 
 let kiki = { x: 5, y: 1 };
 
-let snake = {
+const snake = {
   head: { x: 0, y: 0 },
   tail: { x: 0, y: 0 },
-  body: []
+  body: [],
+  grow(direction) {
+    let tailTarget;
+    switch (direction){
+    case 'left':
+      tailTarget = {x: this.tail.x - 1, y: this.tail.y};
+      break;
+    case 'right':
+      tailTarget = {x: this.tail.x + 1, y: this.tail.y};
+      break;
+    case 'up':
+      tailTarget = {x: this.tail.x, y: this.tail.y - 1};
+      break;
+    case 'down':
+      tailTarget = {x: this.tail.x, y: this.tail.y + 1};
+      break;
+    }
+    let newBody = { x: this.tail.x, y: this.tail.y };
+    spriteMove(this.tail, tailTarget.x, tailTarget.y, 'snake-tail');
+    cells[newBody.y][newBody.x].classList.add('cell', 'snake-body');
+    this.body.push(newBody);
+  },
+  move(targetX, targetY, direction) {
+    let newBodyPart = { x: this.head.x, y: this.head.y };
+    spriteMove(this.head, targetX, targetY, 'snake-head');
+    let lastBodyPart = {x: this.body[this.body.length -1].x, y: this.body[this.body.length -1].y};
+    cells[lastBodyPart.y][lastBodyPart.x].classList.remove('snake-body');
+    spriteMove(this.tail, lastBodyPart.x, lastBodyPart.y, 'snake-tail');
+    cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
+    this.body.pop();
+    this.body.unshift(newBodyPart);
+    this.orient(direction);
+    if (checkCollisions() === true){
+      gameEnd();
+      alert('You killed Kiki.....');
+      gameStart();
+    }
+  },
+  orient(direction) { cells[this.head.y][this.head.x].setAttribute('direction', direction); },
 };
-
-let cells = [];
 
 // GAME MECHANICS  
 // check if the snake is colliding with kiki or itself
@@ -27,6 +65,7 @@ function checkCollisions() {
   return (false);
 }
 
+// randomly position sprites and display them
 function displaySprites() {
   cells[kiki.y][kiki.x].classList.add('kiki');
   snake.head.x = getRandomNumber(2, playfield.columns);
@@ -34,13 +73,14 @@ function displaySprites() {
   snake.tail = { x: snake.head.x - 1, y: snake.head.y };
   cells[snake.head.y][snake.head.x].classList.add('snake-head');
   cells[snake.tail.y][snake.tail.x].classList.add('snake-tail');
-  snakeGrow('left');
+  snake.grow('left');
   if (checkCollisions() === true){
     gameEnd();
     gameStart();
   }
 }
 
+// setup the playfield
 function gameStart() {
   for (let y = 0; y < playfield.rows; y++) {
     cells.push([]);
@@ -56,6 +96,7 @@ function gameStart() {
   displaySprites();
 }
 
+// reset the playfield
 function gameEnd() {
   playfield.element.innerHTML = '';
   cells = [];
@@ -70,50 +111,6 @@ function spriteMove(sprite, targetX, targetY, spriteType) {
   sprite.x = targetX;
   sprite.y = targetY;
   cells[targetY][targetX].classList.add(spriteType);
-  if (checkCollisions() === true){
-    gameEnd();
-    alert('You killed Kiki.....');
-    gameStart();
-  }
-}
-
-// SNAKE
-function snakeGrow(direction) {
-  let tailTarget;
-  switch (direction){
-  case 'left':
-    tailTarget = {x: snake.tail.x - 1, y: snake.tail.y};
-    break;
-  case 'right':
-    tailTarget = {x: snake.tail.x + 1, y: snake.tail.y};
-    break;
-  case 'up':
-    tailTarget = {x: snake.tail.x, y: snake.tail.y - 1};
-    break;
-  case 'down':
-    tailTarget = {x: snake.tail.x, y: snake.tail.y + 1};
-    break;
-  }
-  let newBody = { x: snake.tail.x, y: snake.tail.y };
-  spriteMove(snake.tail, tailTarget.x, tailTarget.y, 'snake-tail');
-  cells[newBody.y][newBody.x].classList.add('cell', 'snake-body');
-  snake.body.push(newBody);
-}
-
-function snakeOrient(direction) {
-  cells[snake.head.y][snake.head.x].setAttribute('direction', direction);
-}
-
-function snakeMove(targetX, targetY, direction) {
-  let newBody = { x: snake.head.x, y: snake.head.y };
-  spriteMove(snake.head, targetX, targetY, 'snake-head');
-  let last = snake.body.length -1;
-  cells[snake.body[last].y][snake.body[last].x].classList.remove('snake-body');
-  spriteMove(snake.tail, snake.body[last].x, snake.body[last].y, 'snake-tail');
-  cells[newBody.y][newBody.x].classList.add('cell', 'snake-body');
-  snake.body.pop();
-  snake.body.unshift(newBody);
-  snakeOrient(direction);
   if (checkCollisions() === true){
     gameEnd();
     alert('You killed Kiki.....');
@@ -151,25 +148,26 @@ startBtn.addEventListener('click', () => {
 //   }
 // };
 
-document.onkeydown = function (event) {
-  switch (event.keyCode) {
-  case 37:		// left
+document.addEventListener('keydown', event => {
+  console.log(event, event.key);
+  switch (event.key) {
+  case 'ArrowLeft':		// left
     if (snake.head.x > 0)
-      snakeMove(snake.head.x - 1, snake.head.y, 'left');
+      snake.move(snake.head.x - 1, snake.head.y, 'left');
     break;
-  case 38:		// up
+  case 'ArrowUp':		// up
     if (snake.head.y > 0)
-      snakeMove(snake.head.x, snake.head.y - 1, 'up');
+      snake.move(snake.head.x, snake.head.y - 1, 'up');
     break;
-  case 39:		// right
+  case 'ArrowRight':		// right
     if (snake.head.x < playfield.columns - 1)
-      snakeMove(snake.head.x + 1, snake.head.y, 'right');
+      snake.move(snake.head.x + 1, snake.head.y, 'right');
     break;
-  case 40:		// down
+  case 'ArrowDown':		// down
     if (snake.head.y < playfield.rows - 1)
-      snakeMove(snake.head.x, snake.head.y + 1, 'down');
+      snake.move(snake.head.x, snake.head.y + 1, 'down');
     break;
   case 32:
-    snakeGrow('left');
+    snake.grow('left');
   }
-};
+});
