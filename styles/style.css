@@ -143,8 +143,17 @@ header hr {
 }
 
 /* SPRITES */
-.player {
+.kiki {
     background: url('./images/kiki1.png') no-repeat center;
+    background-size: contain;
+}
+
+.kiki[data-x$='1'],
+.kiki[data-x$='3'],
+.kiki[data-x$='5'],
+.kiki[data-x$='7'],
+.kiki[data-x$='9'] {
+    background: url('./images/kiki2.png') no-repeat center;
     background-size: contain;
 }
 
