@@ -29,10 +29,10 @@ const snake = {
       tailTarget = {x: this.tail.x, y: this.tail.y + 1};
       break;
     }
-    let newBody = { x: this.tail.x, y: this.tail.y };
+    const newBodyPart = { x: this.tail.x, y: this.tail.y };
     spriteMove(this.tail, tailTarget.x, tailTarget.y, 'snake-tail');
-    cells[newBody.y][newBody.x].classList.add('cell', 'snake-body');
-    this.body.push(newBody);
+    cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
+    this.body.push(newBodyPart);
   },
   move(targetX, targetY, direction) {
     const bodyLen = this.body.length;
