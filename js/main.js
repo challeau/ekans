@@ -35,14 +35,20 @@ const snake = {
     this.body.push(newBody);
   },
   move(targetX, targetY, direction) {
-    let newBodyPart = { x: this.head.x, y: this.head.y };
+    const bodyLen = this.body.length;
+    const newBodyPart = { x: this.head.x, y: this.head.y };
+    const lastBodyPart = { x: this.body[bodyLen -1].x, y: this.body[bodyLen -1].y};
+
+    // move head to target
     spriteMove(this.head, targetX, targetY, 'snake-head');
-    let lastBodyPart = {x: this.body[this.body.length -1].x, y: this.body[this.body.length -1].y};
+    // change last body part to tail
     cells[lastBodyPart.y][lastBodyPart.x].classList.remove('snake-body');
     spriteMove(this.tail, lastBodyPart.x, lastBodyPart.y, 'snake-tail');
-    cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
     this.body.pop();
+    // change old head spot to a body part
+    cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
     this.body.unshift(newBodyPart);
+
     this.orient(direction);
     if (checkCollisions() === true){
       gameEnd();
@@ -50,7 +56,7 @@ const snake = {
       gameStart();
     }
   },
-  orient(direction) { cells[this.head.y][this.head.x].setAttribute('direction', direction); },
+  orient(direction) { cells[this.head.y][this.head.x].setAttribute('direction', direction); }
 };
 
 // GAME MECHANICS  
@@ -149,7 +155,6 @@ startBtn.addEventListener('click', () => {
 // };
 
 document.addEventListener('keydown', event => {
-  console.log(event, event.key);
   switch (event.key) {
   case 'ArrowLeft':		// left
     if (snake.head.x > 0)
