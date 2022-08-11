@@ -9,64 +9,6 @@ const playfield = {
 
 let kiki = { x: 5, y: 1 };
 
-let snake = {
-  head: { x: 0, y: 0 },
-  tail: { x: 0, y: 0 },
-  body: [],
-  grow(direction) {
-    let tailTarget;
-    switch (direction){
-    case 'left':
-      tailTarget = {x: this.tail.x - 1, y: this.tail.y};
-      break;
-    case 'right':
-      tailTarget = {x: this.tail.x + 1, y: this.tail.y};
-      break;
-    case 'up':
-      tailTarget = {x: this.tail.x, y: this.tail.y - 1};
-      break;
-    case 'down':
-      tailTarget = {x: this.tail.x, y: this.tail.y + 1};
-      break;
-    }
-    const newBodyPart = { x: this.tail.x, y: this.tail.y };
-    spriteMove(this.tail, tailTarget.x, tailTarget.y, 'snake-tail');
-    cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
-    this.body.push(newBodyPart);
-  },
-  move(targetX, targetY, direction) {
-    const bodyLen = this.body.length;
-    const newBodyPart = { x: this.head.x, y: this.head.y };
-    const lastBodyPart = { x: this.body[bodyLen -1].x, y: this.body[bodyLen -1].y};
-
-    // move head to target
-    spriteMove(this.head, targetX, targetY, 'snake-head');
-    // change last body part to tail
-    cells[lastBodyPart.y][lastBodyPart.x].classList.remove('snake-body');
-    spriteMove(this.tail, lastBodyPart.x, lastBodyPart.y, 'snake-tail');
-    this.body.pop();
-    // change old head spot to a body part
-    cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
-    this.body.unshift(newBodyPart);
-
-    this.orient(direction);
-    checkCollisions();
-  },
-  orient(direction) { cells[this.head.y][this.head.x].setAttribute('direction', direction); },
-  autoTarget() {
-    const directions = ['left', 'right', 'up', 'down'];
-    const dist = { x: snake.head.x - kiki.x, y: snake.head.y - kiki.y };
-    if (Math.abs(dist.x) > Math.abs(dist.y)){
-      const newX = dist.x > 0 ? snake.head.x - 1 : snake.head.x + 1;
-      snake.move(newX, snake.head.y, directions[dist.x > 0 ? 0 : 1]);
-    }
-    else {
-      const newY = dist.y > 0 ? snake.head.y - 1 : snake.head.y + 1;
-      snake.move(snake.head.x, newY, directions[dist.y > 0 ? 2 : 3]);
-    }
-  }
-};
-
 // GAME MECHANICS  
 // check if the snake is colliding with kiki or itself
 function checkCollisions(isGameNew) {
@@ -109,7 +51,7 @@ function gameStart() {
   }
   displaySprites();
   console.log(snake.head);
-  const titi = setInterval(snake.autoTarget, 1000);
+  setInterval(snake.autoTarget, 400);
   console.log(snake.head);
 }
 

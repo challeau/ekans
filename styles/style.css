@@ -148,11 +148,11 @@ header hr {
     background-size: contain;
 }
 
-.kiki[data-x$='1'],
-.kiki[data-x$='3'],
-.kiki[data-x$='5'],
-.kiki[data-x$='7'],
-.kiki[data-x$='9'] {
+.kiki[data-*$='1'],
+.kiki[data-*$='3'],
+.kiki[data-*$='5'],
+.kiki[data-*$='7'],
+.kiki[data-*$='9'] {
     background: url('./images/kiki2.png') no-repeat center;
     background-size: contain;
 }
@@ -172,19 +172,19 @@ header hr {
     background-size: contain;
 }
 
-*[direction="rigth"] {
+[class*='snake'][direction="rigth"] {
     transform: rotate(0deg);
 }
 
 
-*[direction="down"] {
+[class*='snake'][direction="down"] {
     transform: rotate(90deg);
 }
 
-*[direction="left"] {
+[class*='snake'][direction="left"] {
     transform: rotate(180deg);
 }
 
-*[direction="up"] {
+[class*='snake'][direction="up"] {
     transform: rotate(270deg);
 }

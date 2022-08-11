@@ -10,7 +10,8 @@
   CLOSED: [2022-08-10 Wed 12:27]
 * DONE use eventListeners instead of keydowns
   CLOSED: [2022-08-10 Wed 12:27]
-* TODO give checkCollisions a more sensical return + fix game end msg
+* DONE give checkCollisions a more sensical return + fix game end msg
+  CLOSED: [2022-08-10 Wed 17:59]
 * TODO SNAKE MOVE
 ** TODO snake wrap
 *** DONE head direction
@@ -18,7 +19,12 @@
 *** DONE body direction
     CLOSED: [2022-08-10 Wed 10:00]
 *** TODO body wrap
-*** TODO limits
-** TODO Path finding
-* TODO calculate optimal number of squares for screen
+*** DONE limits
+    CLOSED: [2022-08-10 Wed 17:59]
+** DONE Path finding
+   CLOSED: [2022-08-10 Wed 17:59]
+* TODO snake cant reverse!
+* TODO implement food
 * TODO restart button
+* TODO score
+* TODO calculate optimal number of squares for screen
