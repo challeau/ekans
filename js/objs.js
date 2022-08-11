@@ -25,7 +25,7 @@ class Food {
     do {
       this.x = getRandomNumber(0, playfield.columns);
       this.y = getRandomNumber(0, playfield.rows);
-    } while (isCellEmpty(cells, this.x, this.y));
+    } while (isCellEmpty(cells, this.x, this.y) === false);
     this.points = 50;
     this.type = 'food';
     }

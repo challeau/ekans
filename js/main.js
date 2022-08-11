@@ -17,6 +17,7 @@ function checkCollisions() {
 function generateFood() {
   let newFly = new Food();
   cells[newFly.y][newFly.x].classList.add('fly');
+  console.log(`new food @ ${newFly.x}:${newFly.x}`);
   foods.push(newFly);
 }
 
@@ -52,7 +53,6 @@ function updateScore() {
     if (compareCoordinates(kiki, food) === true)
       score.textContent = Number(score.textContent) + food.points;
   }
-  console.log(score.textContent);
 }
 
 function gameStart() {
@@ -68,7 +68,7 @@ function gameStart() {
     }
   }
   setUpSprites();
-  setInterval(snake.autoTarget, 1000);
+  setInterval(snake.autoTarget, 700);
   setInterval(generateFood, 6000);
 }
 
@@ -139,5 +139,13 @@ document.addEventListener('keydown', event => {
 //     break;
 //   case ' ':
 //     snake.grow('left');
+//   }
+//   for (const food of foods){
+//     console.log(`${snake.head.y}:${snake.head.x} ${food.y}:${food.x} `, compareCoordinates(snake.head, food) === true);
+//     if (compareCoordinates(snake.head, food) === true){
+//       let id = foods.find(e => (e.x === snake.head.x && e.y === snake.head.y));
+//       foods.splice(id, 1);
+//       snake.grow(snake.tail.dir);
+//     }
 //   }
 // });

@@ -31,5 +31,6 @@
 * DONE implement food
   CLOSED: [2022-08-11 Thu 15:31]
 * TODO restart button
-* TODO score
+* DONE score
+  CLOSED: [2022-08-11 Thu 16:28]
 * TODO calculate optimal number of squares for screen

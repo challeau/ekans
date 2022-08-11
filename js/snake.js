@@ -19,7 +19,7 @@ let snake = {
       tailTarget = new Sprite(this.tail.x, this.tail.y + 1);
       break;
     }
-    const newBodyPart = { x: this.tail.x, y: this.tail.y };
+    const newBodyPart = new Sprite(this.tail.x, this.tail.y, 'snake', this.tail.dir);
     spriteMove(this.tail, tailTarget.x, tailTarget.y, 'snake-tail');
     cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
     this.body.push(newBodyPart);
@@ -57,10 +57,16 @@ let snake = {
     potentialTargets.unshift(kiki);
     const closest = getClosestSprite(snake.head, potentialTargets);
     const target = getTargetSprite(snake.head, closest);
+//    console.log(`targetting ${closest.type} at ${closest.y}:${closest.x}
+// src @ ${snake.head.y}:${snake.head.x}`);
     snake.move(target.x, target.y, target.dir);
     for (const food of foods){
-      if (compareCoordinates(snake.head, food) === true)
+      if (compareCoordinates(snake.head, food) === true){
+	let id = foods.find(e => (e.x === snake.head.x && e.y === snake.head.y));
+	foods.splice(id);
 	snake.grow(snake.tail.dir);
+	console.log(foods);
+      }
     }
     gameEnd(checkCollisions());
   }

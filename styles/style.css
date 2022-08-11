@@ -150,7 +150,7 @@ header hr {
 }
 
 .cell {
-    /* border: 1px solid var(--grey); */
+    border: 1px solid var(--grey);
 }
 
 /* SPRITES */
