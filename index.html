@@ -29,27 +29,34 @@
   </head>
 
   <body>
-
     <div class="container">
       <aside>
 	<header>
 	  <h1>EKANS</h1>
 	  <h2>A reversed snake game.</h2>
 	  <hr/>
-	  <p>Help Kiki escape the mean snake that's trying to eat him!</p>
+	  <p>Help Kiki <strong>escape the mean snake</strong> that's trying to eat him!</p>
+	  <p>Earn points by <strong>eating food</strong> before the snake or he'll grow longer and longer...</p>
 	</header>
-	<h2>Controls:</h2>
 	<div class="controls">
+	<h2>Controls:</h2>
 	  <img alt="arrow keys" src="./styles/images/arrows.png"/>
 	  <p>move</p>
 	</div>
+	<img alt="kiki irl" src="./styles/images/kiki-irl.png"/>
 	<button id="start-btn">I'm ready!</button>
       </aside>
 
       <div id="playfield">
       </div>
       <div id="score"><p>0</p></div>
+      <div id="EOG-pannel">
+	<h1>GAME OVER</h1>
+	<h2 id="msg"></h2>
+	<h2 id="final-score">Your final score is: <span>0</span>.</h2>
+      </div>
     </div>
+
     <footer>
       <p id="credits">Made by challeau &euro;</p>
     </footer>

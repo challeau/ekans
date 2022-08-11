@@ -1,14 +1,11 @@
-// OBJECTS
-let score = document.querySelector('#score p');
+// DOM OBJECTS
+const score = document.querySelector('#score p');
 
-let cells = [];
+const EOGpannel = document.getElementById('EOG-pannel');
+const EOGmessage = document.getElementById('msg');
+const EOGscore = document.querySelector('#EOG-pannel h2 span')
 
-const playfield = {
-  element: document.getElementById('playfield'),
-  columns: 10,
-  rows: 10
-};
-
+//CLASSES
 class Sprite {
   constructor(x, y, dir, type) {
     this.x = x;
@@ -17,8 +14,6 @@ class Sprite {
     this.type = type;
   }
 }
-
-let kiki = new Sprite(5, 1, null, 'kiki');
 
 class Food {
   constructor() {
@@ -32,3 +27,14 @@ class Food {
 };
 
 let foods = [];
+
+let cells = [];
+
+const playfield = {
+  element: document.getElementById('playfield'),
+  columns: 10,
+  rows: 10
+};
+
+
+let kiki = new Sprite(5, 1, null, 'kiki');

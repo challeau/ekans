@@ -13,14 +13,15 @@ function checkCollisions() {
   return (ret);
 }
 
-// randomly position sprites and display them
+// generates new food items randomly
 function generateFood() {
   let newFly = new Food();
   cells[newFly.y][newFly.x].classList.add('fly');
-  console.log(`new food @ ${newFly.x}:${newFly.x}`);
+  console.log(`new food @ ${newFly.y}:${newFly.x}`);
   foods.push(newFly);
 }
 
+// generates sprites at random and display them
 function setUpSprites() {
   cells[kiki.y][kiki.x].classList.add('kiki');
   while (checkCollisions() !== 2){
@@ -34,6 +35,7 @@ function setUpSprites() {
   snake.grow('left');
 }
 
+// move sprite to target coordinates
 function spriteMove(sprite, targetX, targetY, spriteType) {
   cells[sprite.y][sprite.x].className = 'cell';
   cells[sprite.y][sprite.x].setAttribute('curve', 'false');
@@ -55,6 +57,9 @@ function updateScore() {
   }
 }
 
+
+let intervals = [];
+// set up board and sprites
 function gameStart() {
   for (let y = 0; y < playfield.rows; y++) {
     cells.push([]);
@@ -68,31 +73,38 @@ function gameStart() {
     }
   }
   setUpSprites();
-  setInterval(snake.autoTarget, 700);
-  setInterval(generateFood, 6000);
+  playfield.element.style.display = 'grid';
+  EOGpannel.style.display = 'none';
+  let snakeInterval = setInterval(snake.autoTarget, 1000);
+  let foodInterval = setInterval(generateFood, 6000);
+  intervals = [snakeInterval, foodInterval];
 }
 
-// reset the playfield
+// reset the playfield, unless there are no collisions (outcome is then 2)
 function gameEnd(outcome) {
   if (outcome === 2)
     return ;
   const msg = ['Kiki died a painful death! You should be ashamed of yourself.',
-	       'The snake has eaten itself. Have some points.'];
-  alert(msg[outcome]);
+	       'The snake has eaten itself. Here\'s an extra 200 points.'];
   playfield.element.innerHTML = '';
-  cells.forEach(cell => cell.className = '');
-  kiki = { x: 5, y: 1 };
-  snake.head = { x: 0, y: 0 };
-  snake.tail = { x: 0, y: 0 };
+  cells = [];
+  kiki = new Sprite(5, 1, null, 'kiki1');
   snake.body = [];
-  gameStart();
+  if (outcome === 1)
+    score.textContent = Number(score.textContent) + 200;
+  EOGscore.textContent = score.textContent;
+  EOGmessage.textContent = msg[outcome];
+  playfield.element.style.display = 'none';
+  EOGpannel.style.display = 'flex';
+  clearInterval(intervals[0]);
+  clearInterval(intervals[1]);
 }
 
 // EVENTS
 const startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', () => {
   if (playfield.element.childElementCount === 0)
-    gameStart();
+    gameStart(0);
 });
 
 document.addEventListener('keydown', event => {
@@ -118,34 +130,3 @@ document.addEventListener('keydown', event => {
   }
   updateScore();
 });
-
-// document.addEventListener('keydown', event => {
-//   switch (event.key) {
-//   case 'ArrowLeft':		// left
-//     if (snake.head.x > 0)
-//       snake.move(snake.head.x - 1, snake.head.y, 'left');
-//     break;
-//   case 'ArrowUp':		// up
-//     if (snake.head.y > 0)
-//       snake.move(snake.head.x, snake.head.y - 1, 'up');
-//     break;
-//   case 'ArrowRight':		// right
-//     if (snake.head.x < playfield.columns - 1)
-//       snake.move(snake.head.x + 1, snake.head.y, 'right');
-//     break;
-//   case 'ArrowDown':		// down
-//     if (snake.head.y < playfield.rows - 1)
-//       snake.move(snake.head.x, snake.head.y + 1, 'down');
-//     break;
-//   case ' ':
-//     snake.grow('left');
-//   }
-//   for (const food of foods){
-//     console.log(`${snake.head.y}:${snake.head.x} ${food.y}:${food.x} `, compareCoordinates(snake.head, food) === true);
-//     if (compareCoordinates(snake.head, food) === true){
-//       let id = foods.find(e => (e.x === snake.head.x && e.y === snake.head.y));
-//       foods.splice(id, 1);
-//       snake.grow(snake.tail.dir);
-//     }
-//   }
-// });

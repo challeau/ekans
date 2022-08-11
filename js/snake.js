@@ -28,7 +28,7 @@ let snake = {
   move(targetX, targetY, direction) {
     const bodyLen = this.body.length;
     const newBodyPart = new Sprite(this.head.x, this.head.y, this.head.dir, 'snake');
-    const lastBodyPart = new Sprite(this.body[bodyLen -1].x, this.body[bodyLen -1].y, this.body[bodyLen -1].dir, snake);
+    const lastBodyPart = new Sprite(this.body[bodyLen -1].x, this.body[bodyLen -1].y, this.body[bodyLen -1].dir, 'snake');
 
     // move head to target
     spriteMove(this.head, targetX, targetY, 'snake-head');
@@ -57,15 +57,14 @@ let snake = {
     potentialTargets.unshift(kiki);
     const closest = getClosestSprite(snake.head, potentialTargets);
     const target = getTargetSprite(snake.head, closest);
-//    console.log(`targetting ${closest.type} at ${closest.y}:${closest.x}
-// src @ ${snake.head.y}:${snake.head.x}`);
+    console.log(`targetting ${closest.type} at ${closest.y}:${closest.x}
+    curr: ${target.y}:${target.x}, nxt stp ${target.y}:${target.x}`);
     snake.move(target.x, target.y, target.dir);
     for (const food of foods){
       if (compareCoordinates(snake.head, food) === true){
 	let id = foods.find(e => (e.x === snake.head.x && e.y === snake.head.y));
 	foods.splice(id);
 	snake.grow(snake.tail.dir);
-	console.log(foods);
       }
     }
     gameEnd(checkCollisions());
