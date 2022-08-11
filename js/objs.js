@@ -1,4 +1,6 @@
 // DOM OBJECTS
+const startBtn = document.getElementById('start-btn');
+
 const score = document.querySelector('#score p');
 
 const EOGpannel = document.getElementById('EOG-pannel');

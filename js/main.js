@@ -24,12 +24,12 @@ function generateFood() {
 // generates sprites at random and display them
 function setUpSprites() {
   cells[kiki.y][kiki.x].classList.add('kiki');
-  while (checkCollisions() !== 2){
+  do {
     snake.head.x = getRandomNumber(2, playfield.columns);
     snake.head.y = getRandomNumber(0, playfield.rows);
     snake.tail.x = snake.head.x - 1;
     snake.tail.y = snake.head.y;
-  }
+  } while (checkCollisions() !== 2);
   cells[snake.head.y][snake.head.x].classList.add('snake-head');
   cells[snake.tail.y][snake.tail.x].classList.add('snake-tail');
   snake.grow('left');
@@ -52,8 +52,11 @@ function spriteMove(sprite, targetX, targetY, spriteType) {
 // setup the playfield
 function updateScore() {
   for (const food of foods){
-    if (compareCoordinates(kiki, food) === true)
+    if (compareCoordinates(kiki, food) === true){
       score.textContent = Number(score.textContent) + food.points;
+      let id = foods.find(e => (e.x === kiki.x && e.y === kiki.y));
+      foods.splice(id);
+    }
   }
 }
 
@@ -73,6 +76,7 @@ function gameStart() {
     }
   }
   setUpSprites();
+  startBtn.textContent = 'Restart';
   playfield.element.style.display = 'grid';
   EOGpannel.style.display = 'none';
   let snakeInterval = setInterval(snake.autoTarget, 1000);
@@ -88,7 +92,9 @@ function gameEnd(outcome) {
 	       'The snake has eaten itself. Here\'s an extra 200 points.'];
   playfield.element.innerHTML = '';
   cells = [];
-  kiki = new Sprite(5, 1, null, 'kiki1');
+  foods = [];
+  kiki = new Sprite(5, 1, null, 'kiki');
+  snake.head = new Sprite(0, 0, null, 'snake');
   snake.body = [];
   if (outcome === 1)
     score.textContent = Number(score.textContent) + 200;
@@ -98,13 +104,13 @@ function gameEnd(outcome) {
   EOGpannel.style.display = 'flex';
   clearInterval(intervals[0]);
   clearInterval(intervals[1]);
+  startBtn.textContent = 'I\'m ready!';
 }
 
 // EVENTS
-const startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', () => {
   if (playfield.element.childElementCount === 0)
-    gameStart(0);
+    gameStart();
 });
 
 document.addEventListener('keydown', event => {

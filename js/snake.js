@@ -58,7 +58,7 @@ let snake = {
     const closest = getClosestSprite(snake.head, potentialTargets);
     const target = getTargetSprite(snake.head, closest);
     console.log(`targetting ${closest.type} at ${closest.y}:${closest.x}
-    curr: ${target.y}:${target.x}, nxt stp ${target.y}:${target.x}`);
+    curr: ${snake.head.y}:${snake.head.x}, nxt stp ${target.y}:${target.x}`);
     snake.move(target.x, target.y, target.dir);
     for (const food of foods){
       if (compareCoordinates(snake.head, food) === true){
@@ -70,3 +70,36 @@ let snake = {
     gameEnd(checkCollisions());
   }
 };
+
+function getTargetSprite(snakePos, target) {
+  const directions = ['left', 'right', 'up', 'down'];
+  const dist2Target = { x: snakePos.x - target.x, y: snakePos.y - target.y };
+  const stepX = dist2Target.x > 0 ? snakePos.x - 1 : snakePos.x + 1;
+  const stepY = dist2Target.y > 0 ? snakePos.y - 1 : snakePos.y + 1;
+  let canMoveX = (stepX <= 9 && !compareCoordinates(snakePos, {x: stepX, y: snakePos.y}));
+  let canMoveY = (stepY <= 9 && !compareCoordinates(snakePos, {x: snakePos.x, y: stepY}));
+
+  snake.body.forEach(bodyPart => {
+    if (compareCoordinates(bodyPart, {x: stepX, y: snakePos.y}) === true)
+      canMoveX = false;
+    if (compareCoordinates(bodyPart, {x: snakePos.x, y: stepY}) === true)
+      canMoveY = false;
+  });
+
+  // furthest on X axis
+  if (Math.abs(dist2Target.x) >= Math.abs(dist2Target.y)){
+    if (canMoveX)
+      return ({ x: stepX, y: snakePos.y, dir: directions[dist2Target.x > 0 ? 0 : 1] });
+    else if (canMoveY)
+      return ({ x: snakePos.x, y: stepY, dir: directions[dist2Target.y > 0 ? 2 : 3] });
+  }
+  // furthest on Y axis
+  else {
+    if (canMoveY)
+      return ({ x: snakePos.x, y: stepY, dir: directions[dist2Target.y > 0 ? 2 : 3] });
+    else if (canMoveX)
+      return ({ x: stepX, y: snakePos.y, dir: directions[dist2Target.x > 0 ? 0 : 1] });
+  }
+  gameEnd(3);
+}
+
