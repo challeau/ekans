@@ -123,6 +123,17 @@ header hr {
     background-color: var(--white);
 }
 
+#score {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    padding: 0.8em;
+    color: var(--yellow);
+    background-color: var(--white);
+    border: 1px solid var(--yellow);
+    border-radius: 25px;
+    text-align: center;
+}
 
 /* PLAYFIELD */
 #playfield {
@@ -143,6 +154,11 @@ header hr {
 }
 
 /* SPRITES */
+.fly {
+    background: url('./images/fly1.png') no-repeat center;
+    background-size: contain;
+}
+
 .kiki {
     background: url('./images/kiki1.png') no-repeat center;
     background-size: contain;

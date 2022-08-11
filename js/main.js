@@ -1,39 +1,36 @@
-// OBJECTS
-let cells = [];
-
-const playfield = {
-  element: document.getElementById('playfield'),
-  columns: 10,
-  rows: 10
-};
-
-let kiki = { x: 5, y: 1 };
-
 // SPRITES  
 // check if the snake is colliding with kiki or itself
-function checkCollisions(isGameNew) {
-  let msg = '';
+function checkCollisions() {
+  let ret = 2;
   const snakeCoords = [snake.head, snake.body, snake.tail].flat();
-  if (snakeCoords.some(snakePart => checkCoords(snakePart, kiki))) // snake collision with Kiki
-    msg = 'Kiki died a painful death! You should be ashamed of yourself.';
+  // snake collision with Kiki
+  if (snakeCoords.some(snakePart => compareCoordinates(snakePart, kiki)))
+    ret = 0;
   snakeCoords.shift();
-  if (snakeCoords.some(snakePart => checkCoords(snakePart, snake.head))) // snake collision with self
-    msg = 'The snake has eaten itself. Have some points.';
-  if (msg)
-    gameEnd(msg, isGameNew);
-  return ;
+  // snake collision with self
+  if (snakeCoords.some(snakePart => compareCoordinates(snakePart, snake.head)))
+    ret = 1;
+  return (ret);
 }
 
 // randomly position sprites and display them
+function generateFood() {
+  let newFly = new Food();
+  cells[newFly.y][newFly.x].classList.add('fly');
+  foods.push(newFly);
+}
+
 function setUpSprites() {
   cells[kiki.y][kiki.x].classList.add('kiki');
-  snake.head.x = getRandomNumber(2, playfield.columns);
-  snake.head.y = getRandomNumber(0, playfield.rows);
-  snake.tail = { x: snake.head.x - 1, y: snake.head.y };
+  while (checkCollisions() !== 2){
+    snake.head.x = getRandomNumber(2, playfield.columns);
+    snake.head.y = getRandomNumber(0, playfield.rows);
+    snake.tail.x = snake.head.x - 1;
+    snake.tail.y = snake.head.y;
+  }
   cells[snake.head.y][snake.head.x].classList.add('snake-head');
   cells[snake.tail.y][snake.tail.x].classList.add('snake-tail');
   snake.grow('left');
-  checkCollisions(true);
 }
 
 function spriteMove(sprite, targetX, targetY, spriteType) {
@@ -41,12 +38,23 @@ function spriteMove(sprite, targetX, targetY, spriteType) {
   cells[sprite.y][sprite.x].setAttribute('curve', 'false');
   sprite.x = targetX;
   sprite.y = targetY;
+  if (/snake/.test(spriteType))
+    sprite.type = 'snake';
+  else
+    sprite.type = 'kiki';
   cells[targetY][targetX].classList.add(spriteType);
-  checkCollisions();
 }
 
 // GAME
 // setup the playfield
+function updateScore() {
+  for (const food of foods){
+    if (compareCoordinates(kiki, food) === true)
+      score.textContent = Number(score.textContent) + food.points;
+  }
+  console.log(score.textContent);
+}
+
 function gameStart() {
   for (let y = 0; y < playfield.rows; y++) {
     cells.push([]);
@@ -60,22 +68,24 @@ function gameStart() {
     }
   }
   setUpSprites();
-  console.log(snake.head);
-  setInterval(snake.autoTarget, 400);
-  console.log(snake.head);
+  setInterval(snake.autoTarget, 1000);
+  setInterval(generateFood, 6000);
 }
 
 // reset the playfield
-function gameEnd(message, isGameNew) {
-  alert(message);
+function gameEnd(outcome) {
+  if (outcome === 2)
+    return ;
+  const msg = ['Kiki died a painful death! You should be ashamed of yourself.',
+	       'The snake has eaten itself. Have some points.'];
+  alert(msg[outcome]);
   playfield.element.innerHTML = '';
   cells.forEach(cell => cell.className = '');
   kiki = { x: 5, y: 1 };
   snake.head = { x: 0, y: 0 };
   snake.tail = { x: 0, y: 0 };
   snake.body = [];
-  if (isGameNew)
-    gameStart();
+  gameStart();
 }
 
 // EVENTS
@@ -106,6 +116,7 @@ document.addEventListener('keydown', event => {
   case ' ':
     snake.grow('left');
   }
+  updateScore();
 });
 
 // document.addEventListener('keydown', event => {

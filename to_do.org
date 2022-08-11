@@ -12,19 +12,24 @@
   CLOSED: [2022-08-10 Wed 12:27]
 * DONE give checkCollisions a more sensical return + fix game end msg
   CLOSED: [2022-08-10 Wed 17:59]
-* TODO SNAKE MOVE
-** TODO snake wrap
+* DONE SNAKE MOVE
+  CLOSED: [2022-08-11 Thu 15:31]
+** DONE snake wrap
+   CLOSED: [2022-08-11 Thu 15:31]
 *** DONE head direction
     CLOSED: [2022-08-10 Wed 10:00]
 *** DONE body direction
     CLOSED: [2022-08-10 Wed 10:00]
-*** TODO body wrap
+*** DONE body wrap
+    CLOSED: [2022-08-11 Thu 15:31]
 *** DONE limits
     CLOSED: [2022-08-10 Wed 17:59]
 ** DONE Path finding
    CLOSED: [2022-08-10 Wed 17:59]
-* TODO snake cant reverse!
-* TODO implement food
+* DONE snake cant reverse!
+  CLOSED: [2022-08-11 Thu 15:31]
+* DONE implement food
+  CLOSED: [2022-08-11 Thu 15:31]
 * TODO restart button
 * TODO score
 * TODO calculate optimal number of squares for screen
