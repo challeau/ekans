@@ -172,19 +172,31 @@ header hr {
     background-size: contain;
 }
 
-[class*='snake'][direction="rigth"] {
+.snake-body[curve='true'] {
+    background: url('./images/snake-curve.png') no-repeat center;
+    transform: rotate(90deg);
+    background-size: contain;
+}
+
+.snake-body[curve='true'] {
+    background: url('./images/snake-curve.png') no-repeat center;
+    transform: rotate(0deg);
+    background-size: contain;
+}
+
+[class*='snake'][direction='rigth'] {
     transform: rotate(0deg);
 }
 
 
-[class*='snake'][direction="down"] {
+[class*='snake'][direction='down'] {
     transform: rotate(90deg);
 }
 
-[class*='snake'][direction="left"] {
+[class*='snake'][direction='left'] {
     transform: rotate(180deg);
 }
 
-[class*='snake'][direction="up"] {
+[class*='snake'][direction='up'] {
     transform: rotate(270deg);
 }

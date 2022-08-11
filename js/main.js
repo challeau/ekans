@@ -9,7 +9,7 @@ const playfield = {
 
 let kiki = { x: 5, y: 1 };
 
-// GAME MECHANICS  
+// SPRITES  
 // check if the snake is colliding with kiki or itself
 function checkCollisions(isGameNew) {
   let msg = '';
@@ -25,7 +25,7 @@ function checkCollisions(isGameNew) {
 }
 
 // randomly position sprites and display them
-function displaySprites() {
+function setUpSprites() {
   cells[kiki.y][kiki.x].classList.add('kiki');
   snake.head.x = getRandomNumber(2, playfield.columns);
   snake.head.y = getRandomNumber(0, playfield.rows);
@@ -36,6 +36,16 @@ function displaySprites() {
   checkCollisions(true);
 }
 
+function spriteMove(sprite, targetX, targetY, spriteType) {
+  cells[sprite.y][sprite.x].className = 'cell';
+  cells[sprite.y][sprite.x].setAttribute('curve', 'false');
+  sprite.x = targetX;
+  sprite.y = targetY;
+  cells[targetY][targetX].classList.add(spriteType);
+  checkCollisions();
+}
+
+// GAME
 // setup the playfield
 function gameStart() {
   for (let y = 0; y < playfield.rows; y++) {
@@ -49,7 +59,7 @@ function gameStart() {
       cells[y].push(div);
     }
   }
-  displaySprites();
+  setUpSprites();
   console.log(snake.head);
   setInterval(snake.autoTarget, 400);
   console.log(snake.head);
@@ -66,14 +76,6 @@ function gameEnd(message, isGameNew) {
   snake.body = [];
   if (isGameNew)
     gameStart();
-}
-
-function spriteMove(sprite, targetX, targetY, spriteType) {
-  cells[sprite.y][sprite.x].className = 'cell';
-  sprite.x = targetX;
-  sprite.y = targetY;
-  cells[targetY][targetX].classList.add(spriteType);
-  checkCollisions();
 }
 
 // EVENTS
