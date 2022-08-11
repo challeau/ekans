@@ -42,22 +42,22 @@ let snake = {
     checkCollisions();
   },
   orient(headDirection) {
-    // let bodyDirection = cells[this.body[0].y][this.body[0].x].getAttribute('direction');
-    // if (bodyDirection !== headDirection){
-    //   cells[this.body[0].y][this.body[0].x].setAttribute('curve', 'true');
-    //   if ((bodyDirection === 'left'&& headDirection === 'down')
-    // 	  || (bodyDirection === 'up'&& headDirection === 'right'))
-    // 	cells[this.body[0].y][this.body[0].x].setAttribute('direction', 'right');
-    //   if ((bodyDirection === 'right'&& headDirection === 'down')
-    // 	  || (bodyDirection === 'up'&& headDirection === 'left'))
-    // 	cells[this.body[0].y][this.body[0].x].setAttribute('direction', 'down');
-    //   if ((bodyDirection === 'right'&& headDirection === 'up')
-    // 	  || (bodyDirection === 'down'&& headDirection === 'left'))
-    // 	cells[this.body[0].y][this.body[0].x].setAttribute('direction', 'left');
-    //   if ((bodyDirection === 'down'&& headDirection === 'right')
-    // 	  || (bodyDirection === 'left'&& headDirection === 'up'))
-    // 	cells[this.body[0].y][this.body[0].x].setAttribute('direction', 'up');
-    // }
+    let bodyDirection = cells[this.body[0].y][this.body[0].x].getAttribute('direction');
+    if (bodyDirection !== headDirection){
+      cells[this.body[0].y][this.body[0].x].setAttribute('curve', 'true');
+      if ((bodyDirection === 'left'&& headDirection === 'down')
+    	  || (bodyDirection === 'up'&& headDirection === 'right'))
+    	cells[this.body[0].y][this.body[0].x].setAttribute('direction', 'right');
+      if ((bodyDirection === 'right'&& headDirection === 'down')
+    	  || (bodyDirection === 'up'&& headDirection === 'left'))
+    	cells[this.body[0].y][this.body[0].x].setAttribute('direction', 'down');
+      if ((bodyDirection === 'right'&& headDirection === 'up')
+    	  || (bodyDirection === 'down'&& headDirection === 'left'))
+    	cells[this.body[0].y][this.body[0].x].setAttribute('direction', 'left');
+      if ((bodyDirection === 'down'&& headDirection === 'right')
+    	  || (bodyDirection === 'left'&& headDirection === 'up'))
+    	cells[this.body[0].y][this.body[0].x].setAttribute('direction', 'up');
+    }
     cells[this.head.y][this.head.x].setAttribute('direction', headDirection);
   },
   autoTarget() {
