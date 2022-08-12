@@ -39,7 +39,8 @@ let snake = {
     // change old head spot to a body part
     cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
     this.body.unshift(newBodyPart);
-    this.orient(direction, newBodyPart);
+    setTailDirection(this.tail, this.body);
+    this.orient(direction);
   },
 
   orient(headDirection) {
@@ -100,6 +101,6 @@ function getTargetSprite(snakePos, target) {
     else if (canMoveX)
       return ({ x: stepX, y: snakePos.y, dir: directions[dist2Target.x > 0 ? 0 : 1] });
   }
-  gameEnd(3);
+  gameEnd(1);
 }
 

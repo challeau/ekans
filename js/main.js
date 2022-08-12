@@ -17,7 +17,6 @@ function checkCollisions() {
 function generateFood() {
   let newFly = new Food();
   cells[newFly.y][newFly.x].classList.add('fly');
-  console.log(`new food @ ${newFly.y}:${newFly.x}`);
   foods.push(newFly);
 }
 
@@ -46,6 +45,7 @@ function spriteMove(sprite, targetX, targetY, spriteType) {
   else
     sprite.type = 'kiki';
   cells[targetY][targetX].classList.add(spriteType);
+  updateScore();
 }
 
 // GAME
@@ -53,13 +53,13 @@ function spriteMove(sprite, targetX, targetY, spriteType) {
 function updateScore() {
   for (const food of foods){
     if (compareCoordinates(kiki, food) === true){
+      console.log('collision');
       score.textContent = Number(score.textContent) + food.points;
       let id = foods.find(e => (e.x === kiki.x && e.y === kiki.y));
       foods.splice(id);
     }
   }
 }
-
 
 let intervals = [];
 // set up board and sprites
@@ -76,15 +76,16 @@ function gameStart() {
     }
   }
   setUpSprites();
-  startBtn.textContent = 'Restart';
   playfield.element.style.display = 'grid';
   EOGpannel.style.display = 'none';
-  let snakeInterval = setInterval(snake.autoTarget, 1000);
-  let foodInterval = setInterval(generateFood, 6000);
+  let snakeInterval = setInterval(snake.autoTarget, 500);
+  let foodInterval = setInterval(generateFood, getRandomNumber(600, 2000));
   intervals = [snakeInterval, foodInterval];
 }
 
-// reset the playfield, unless there are no collisions (outcome is then 2)
+// reset the playfield, unless there are no collisions
+// outcome : return of checkCollisions
+//	--> 0 if snake/kiki collision, 1 if snake/snake collision, 2 if no collision
 function gameEnd(outcome) {
   if (outcome === 2)
     return ;
@@ -92,6 +93,7 @@ function gameEnd(outcome) {
 	       'The snake has eaten itself. Here\'s an extra 200 points.'];
   playfield.element.innerHTML = '';
   cells = [];
+  cells.forEach(cell => cell.className = '');
   foods = [];
   kiki = new Sprite(5, 1, null, 'kiki');
   snake.head = new Sprite(0, 0, null, 'snake');
@@ -104,7 +106,7 @@ function gameEnd(outcome) {
   EOGpannel.style.display = 'flex';
   clearInterval(intervals[0]);
   clearInterval(intervals[1]);
-  startBtn.textContent = 'I\'m ready!';
+  startBtn.textContent = 'Restart';
 }
 
 // EVENTS
@@ -134,5 +136,4 @@ document.addEventListener('keydown', event => {
   case ' ':
     snake.grow('left');
   }
-  updateScore();
 });
