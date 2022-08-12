@@ -19,7 +19,7 @@ let snake = {
       tailTarget = new Sprite(this.tail.x, this.tail.y + 1);
       break;
     }
-    const newBodyPart = new Sprite(this.tail.x, this.tail.y, 'snake', this.tail.dir);
+    const newBodyPart = new Sprite(this.tail.x, this.tail.y, this.tail.dir, 'snake');
     spriteMove(this.tail, tailTarget.x, tailTarget.y, 'snake-tail');
     cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
     this.body.push(newBodyPart);
@@ -41,6 +41,7 @@ let snake = {
     this.body.unshift(newBodyPart);
     setTailDirection(this.tail, this.body);
     this.orient(direction);
+    gameEnd(checkCollisions());
   },
 
   orient(headDirection) {
@@ -61,13 +62,13 @@ let snake = {
     console.log(`targetting ${closest.type} at ${closest.y}:${closest.x}
     curr: ${snake.head.y}:${snake.head.x}, nxt stp ${target.y}:${target.x}`);
     snake.move(target.x, target.y, target.dir);
-    for (const food of foods){
-      if (compareCoordinates(snake.head, food) === true){
-	let id = foods.find(e => (e.x === snake.head.x && e.y === snake.head.y));
-	foods.splice(id);
-	snake.grow(snake.tail.dir);
-      }
-    }
+    // for (const food of foods){
+    //   if (compareCoordinates(snake.head, food) === true){
+    // 	let id = foods.find(e => (e.x === snake.head.x && e.y === snake.head.y));
+    // 	foods.splice(id);
+    // 	snake.grow(snake.tail.dir);
+    //   }
+    // }
     gameEnd(checkCollisions());
   }
 };
@@ -101,6 +102,6 @@ function getTargetSprite(snakePos, target) {
     else if (canMoveX)
       return ({ x: stepX, y: snakePos.y, dir: directions[dist2Target.x > 0 ? 0 : 1] });
   }
-  gameEnd(1);
+  gameEnd(3);
 }
 

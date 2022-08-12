@@ -23,7 +23,7 @@ class Food {
       this.x = getRandomNumber(0, playfield.columns);
       this.y = getRandomNumber(0, playfield.rows);
     } while (isCellEmpty(cells, this.x, this.y) === false);
-    this.points = 50;
+    this.points = 10;
     this.type = 'food';
     }
 };

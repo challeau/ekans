@@ -1,15 +1,29 @@
 // SPRITES  
 // check if the snake is colliding with kiki or itself
 function checkCollisions() {
-  let ret = 2;
+  let ret = 0;
   const snakeCoords = [snake.head, snake.body, snake.tail].flat();
+
+  // any collision with food
+  for (const food of foods){
+    if (compareCoordinates(kiki, food) === true){
+      let id = foods.find(sprite => (sprite.x === kiki.x && sprite.y === kiki.y));
+      updateScore(food);
+      foods.splice(id, 1);
+    }
+    if (compareCoordinates(snake.head, food) === true){
+      let id = foods.find(sprite => (sprite.x === snake.head.x && sprite.y === snake.head.y));
+      snake.grow(snake.tail.dir);
+      foods.splice(id, 1);
+    }
+  }
   // snake collision with Kiki
   if (snakeCoords.some(snakePart => compareCoordinates(snakePart, kiki)))
-    ret = 0;
+    ret = 1;
   snakeCoords.shift();
   // snake collision with self
   if (snakeCoords.some(snakePart => compareCoordinates(snakePart, snake.head)))
-    ret = 1;
+    ret = 2;
   return (ret);
 }
 
@@ -28,7 +42,7 @@ function setUpSprites() {
     snake.head.y = getRandomNumber(0, playfield.rows);
     snake.tail.x = snake.head.x - 1;
     snake.tail.y = snake.head.y;
-  } while (checkCollisions() !== 2);
+  } while (checkCollisions() !== 0);
   cells[snake.head.y][snake.head.x].classList.add('snake-head');
   cells[snake.tail.y][snake.tail.x].classList.add('snake-tail');
   snake.grow('left');
@@ -45,20 +59,13 @@ function spriteMove(sprite, targetX, targetY, spriteType) {
   else
     sprite.type = 'kiki';
   cells[targetY][targetX].classList.add(spriteType);
-  updateScore();
 }
 
 // GAME
 // setup the playfield
-function updateScore() {
-  for (const food of foods){
-    if (compareCoordinates(kiki, food) === true){
-      console.log('collision');
-      score.textContent = Number(score.textContent) + food.points;
-      let id = foods.find(e => (e.x === kiki.x && e.y === kiki.y));
-      foods.splice(id);
-    }
-  }
+function updateScore(food) {
+  if (food !== undefined)
+    score.textContent = Number(score.textContent) + food.points;    
 }
 
 let intervals = [];
@@ -85,12 +92,13 @@ function gameStart() {
 
 // reset the playfield, unless there are no collisions
 // outcome : return of checkCollisions
-//	--> 0 if snake/kiki collision, 1 if snake/snake collision, 2 if no collision
+//	--> 0 if no collisions,  1 if snake/kiki collision, 2 if snake/snake collision, 3 if the snake gets stuck
 function gameEnd(outcome) {
-  if (outcome === 2)
+  if (outcome === 0)
     return ;
   const msg = ['Kiki died a painful death! You should be ashamed of yourself.',
-	       'The snake has eaten itself. Here\'s an extra 200 points.'];
+	       'The snake has eaten itself. Here\'s an extra 200 points.',
+	      'The snake got stuck !'];
   playfield.element.innerHTML = '';
   cells = [];
   cells.forEach(cell => cell.className = '');
@@ -98,10 +106,10 @@ function gameEnd(outcome) {
   kiki = new Sprite(5, 1, null, 'kiki');
   snake.head = new Sprite(0, 0, null, 'snake');
   snake.body = [];
-  if (outcome === 1)
+  if (outcome === 2)
     score.textContent = Number(score.textContent) + 200;
   EOGscore.textContent = score.textContent;
-  EOGmessage.textContent = msg[outcome];
+  EOGmessage.textContent = msg[outcome - 1];
   playfield.element.style.display = 'none';
   EOGpannel.style.display = 'flex';
   clearInterval(intervals[0]);
