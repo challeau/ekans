@@ -1,11 +1,11 @@
 :root {
     --white: #F4F0EB;
     --grey: #888C90;
-    --light-grey: #D9D9D8;
     --dark-grey: #363F47;
     --blue: #9EC0D5;
+    --dark-blue: #518fb2;
     --yellow: #F5B83D;
-    --red: #FF6B64;
+    --red: #FF351F;
     --green: #B8E788;
 }
 
@@ -17,25 +17,19 @@
 
 body {
     background-color: var(--blue);
-    width: 100%;
-}
-
-p {
-    font-family: rainyhearts, sans-serif;
-    font-size: 2em;
-    font-weight: 500;
+    font-family: pixelmix, sans-serif;
 }
 
 h1 {
     font-family: MonsterFriendFore, sans-serif;
-    font-size: 2.5em;
-    text-align: center;
+    font-size: 4em;
+    color: var(--dark-blue);
+    -webkit-text-stroke: 3px var(--dark-grey);
+    text-stroke: 3px var(--dark-grey);
 }
 
 h2 {
-    font-family: rainyhearts, sans-serif;
-    font-size: 2em;
-    text-align: left;
+    color: var(--dark-grey);
 }
 
 footer {
@@ -46,107 +40,123 @@ footer {
     text-align: center;
 }
 
-
-/* LAYOUT */
-.container {
+.x-box {
     display: flex;
     flex-direction: row;
-    align-content: flex-start;
+    align-items: center;
     justify-content: space-evenly;
 }
 
-
-/* LEFT PANNEL */
-aside {
-    width: 30%;
+.y-box {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    margin: 1em;
-    padding: 1em;
-    border: 2px solid var(--grey);
-    border-radius: 20px;
-    background-color: var(--white);
 }
 
-aside img {
-    height: 25vh;
-    width: auto;
+/* LEFT PANNEL */
+.presentation {
+    width: 30%;
+    height: 100%;
+    align-items: flex-start;
 }
 
-header {
-    padding-bottom: 1em;
+.presentation p {
+    font-size: 1.4em;
+    padding: 1em 0 2em;
+    line-height: 1.5em;
 }
 
-header h1 {
-    font-family: MonsterFriendFore, sans-serif;
-    font-size: 2.5em;
-    text-align: center;
+.manual {
+    padding: 4em 0 0;
 }
 
-header h2 {
-    font-family: rainyhearts, sans-serif;
-    font-size: 2em;
-    text-align: center;
+.annoted-picture {
+    display: inline-flex;
+    width: 9vh;
+    position: relative;
 }
 
-/* header p { */
-/*     font-family: pixelmix, sans-serif; */
-/* } */
+.annotation {
+    position: absolute;
+    bottom: 5.5vh;
+    color: var(--dark-grey);
+    font-size: 0.7em;
+}
 
-header hr {
-    margin-bottom: 1em;
+.kiki-portrait {
+    height: 7vh;
+    position: absolute;
+    bottom: -1vh;
+}
+
+.food-pic {
+    height: 8vh;
+    position: absolute;
+    top: -7vh;
+}
+
+.apple {
+    left: -2vh;
+}
+
+.carrot {
+    right: -1.6vh;
 }
 
 .controls {
     align-self: flex-start;
-    padding-top: 1em;
 }
 
 .controls img {
-    float: left;
     height: 4em;
-    padding-right: 1em;
 }
 
-.controls p {
-    float: right;
-    padding-top: 0.5em;
-    font-size: 2.5em;
+.controls .x-box {
+    margin: auto;
+    width: 55%;
+    color: var(--dark-grey);
+    font-size: 1.4em;
 }
+
 
 #start-btn {
-    padding: 0.3em 0.3em;
+    width: 40%;
+    position: relative;
+    top: 5vh;
+    margin: auto;
+
     color: var(--white);
-    font-family:  rainyhearts, sans-serif;
-    font-size: 2em;
+    background-color: var(--dark-blue);
+    border: 16px solid var(--white);
+    border-image: url("./assets/start-blob.png") 30 stretch;
+    border-radius: 50px;
+
+    cursor: pointer;
+    font-family: MonsterFriendFore, sans-serif;
+    font-size: 1.5em;
     text-align: center;
     text-decoration: none;
-    border: 1px solid var(--white);
-    border-radius: 20px;
-    background-color: var(--blue);
-    cursor: pointer;
 }
 
-#start-btn:hover {
-    color: var(--blue);
-    border: 1px solid var(--blue);
-    border-radius: 20px;
-    background-color: var(--white);
+#start-btn:active {
+    top: 4vh;
 }
 
 #score {
-    min-width: 2em;
+    min-width: 1em;
     position: absolute;
     top: 1em;
     right: 1em;
-    padding: 0.8em;
+    padding: 1em;
+
     color: var(--white);
-    background-color: var(--yellow);
-    border: 1px solid var(--yellow);
-    border-radius: 25px;
     text-align: center;
+
+    border: 15px solid var(--yellow);
+    border-image: url("./assets/score-blob.png") 25 stretch;
+    border-radius: 50px;
+    background-color: var(--yellow);
 }
 
 /* END OF GAME PANNEL */
@@ -155,17 +165,24 @@ header hr {
     height: 87vh;
     margin: 1em;
     padding: 1em;
-    border: 2px solid var(--grey);
-    border-radius: 20px;
-    background-color: var(--white);
+    
     display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    
+    color: var(--red);
+    border: 15px solid var(--grey);
+    border-image: url("./assets/playfiled-blob.png") 30 stretch;
+    border-radius: 50px;
+    background-color: var(--white);
+}
+
+#EOG-pannel h1 {
+    color: var(--red);
+    /* -webkit-text-stroke-color: var(--red); */
 }
 
 #EOG-pannel h2{
-    padding: 1em;
+    padding: 1em 5em;
+    line-height: 1.5em;
 }
 
 #final-score {
@@ -174,88 +191,113 @@ header hr {
 
 #final-score span {
     color: var(--yellow);
-    font-weight: 700;
+    font-size: 2em;
+    font-family: MonsterFriendFore, sans-serif;
+    -webkit-text-stroke: 3px var(--dark-grey);
+    text-stroke: 3px var(--dark-grey);
 }
 
 /* PLAYFIELD */
 #playfield {
-    width: 87vh;
-    height: 87vh;
+    width: 85vh;
+    height: 85vh;
     margin: 1em;
     padding: 1em;
-    border: 2px solid var(--grey);
-    border-radius: 20px;
-    background-color: var(--white);
+
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
     gap: 0;
+
+    border: 15px solid var(--grey);
+    border-image: url("./assets/playfiled-blob.png") 30 stretch;
+    border-radius: 50px;
+    background-color: var(--white);
 }
 
-/* .cell { */
-/*     border: 1px solid var(--grey); */
-/* } */
+#credits {
+    bottom: 1vh;
+}
+
+.cell {
+    border: none;
+}
 
 /* SPRITES */
-.fly {
-    background: url('./images/fly1.png') no-repeat center;
+.apple {
+    background: url('./assets/apple.gif') no-repeat center;
+    background-size: contain;
+}
+
+.carrot {
+    background: url('./assets/carrot.gif') no-repeat center;
     background-size: contain;
 }
 
 .kiki {
-    background: url('./images/kiki1.png') no-repeat center;
-    background-size: contain;
+    background: url('./assets/kiki-sprite.png') no-repeat center;
+    background-position: top left;
+    background-size: 215%;
 }
 
-.kiki[data-x$='1'],
-.kiki[data-x$='3'],
-.kiki[data-x$='5'],
-.kiki[data-x$='7'],
-.kiki[data-x$='9'] {
-    background: url('./images/kiki2.png') no-repeat center;
-    background-size: contain;
+.kiki[direction='right']{
+    background-position: top right;
 }
+
+.kiki[direction='left']{
+    background-position: top left;
+}
+
+.kiki[direction='down']{
+    background-position: bottom left;
+}
+
+.kiki[direction='up']{
+    background-position: bottom right;
+}
+
+
+[class*='snake'] {
+    background: url('./assets/snake-sprite.png') no-repeat center;
+    background-size: 200%;
+}
+
 
 .snake-head {
-    background: url('./images/snake-head.png') no-repeat center;
-    background-size: contain;
+    background-position: top left;
 }
 
 .snake-tail {
-    background: url('./images/snake-tail.png') no-repeat center;
-    background-size: contain;
+    background-position: bottom left;
 }
 
 .snake-body {
-    background: url('./images/snake-body.png') no-repeat center;
-    background-size: contain;
+    background-position: top right;
 }
 
 .snake-body[curve='true'] {
-    background: url('./images/snake-curve.png') no-repeat center;
+    background-position: bottom right;
+}
+
+.snake-body[curve='true'][direction='rigth'] {
+    background-position: bottom right;
+    transform: rotate(0deg);
+}
+
+[class*='snake'][direction='right'] {
     transform: rotate(90deg);
-    background-size: contain;
-}
-
-.snake-body[curve='true'] {
-    background: url('./images/snake-curve.png') no-repeat center;
-    transform: rotate(0deg);
-    background-size: contain;
-}
-
-[class*='snake'][direction='rigth'] {
-    transform: rotate(0deg);
 }
 
 
 [class*='snake'][direction='down'] {
-    transform: rotate(90deg);
-}
-
-[class*='snake'][direction='left'] {
     transform: rotate(180deg);
 }
 
-[class*='snake'][direction='up'] {
+[class*='snake'][direction='left'] {
     transform: rotate(270deg);
 }
+
+[class*='snake'][direction='up'] {
+    transform: rotate(0deg);
+}
+

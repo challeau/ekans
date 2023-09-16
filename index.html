@@ -1,70 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- General information -->
-    <title>EKANS</title>
-    <meta name="description" content="A reversed snake game.">
-    <meta name="author" content="challeau">
-    <meta charset="utf-8" />
-    <base href=""/>
+    <head>
+	<!-- General information -->
+	<title>EKANS</title>
+	<meta name="description" content="A reversed snake game.">
+	<meta name="author" content="challeau">
+	<meta charset="utf-8" />
+	<base href=""/>
 
-    <!-- Open Graph settings -->
-    <meta property="og:title" content="EKANS">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://challeau.github.io/ekans">
-    <meta property="og:description" content="A reversed snake game.">
-    <meta property="og:image" content="./styles/favicon/favicon.ico">
+	<!-- Open Graph settings -->
+	<meta property="og:title" content="EKANS">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://challeau.github.io/ekans">
+	<meta property="og:description" content="A reversed snake game.">
+	<meta property="og:image" content="./styles/favicon/favicon.ico">
 
-    <!-- Viewport settings -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- Viewport settings -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Link the stylesheet -->
-    <link rel="stylesheet" href="./styles/style.css" />
+	<!-- Link the stylesheet -->
+	<link rel="stylesheet" href="./styles/style.css" />
 
-    <!-- Custom fonts -->
-    <link rel="stylesheet" href="./styles/fonts.css" />
+	<!-- Custom fonts -->
+	<link rel="stylesheet" href="./styles/fonts.css" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./styles/favicon/favicon.ico">
-  </head>
+	<!-- Favicon -->
+	<link rel="icon" type="image/x-icon" href="./styles/favicon/favicon.ico">
+    </head>
 
-  <body>
-    <div class="container">
-      <aside>
-	<header>
-	  <h1>EKANS</h1>
-	  <h2>A reversed snake game.</h2>
-	  <hr/>
-	  <p>Help Kiki <strong>escape the mean snake</strong> that's trying to eat him!</p>
-	  <p>Earn points by <strong>eating food</strong> before the snake or he'll grow longer and longer...</p>
-	</header>
-	<div class="controls">
-	<h2>Controls:</h2>
-	  <img alt="arrow keys" src="./styles/images/arrows.png"/>
-	  <p>move</p>
+    <body>
+	<div class="x-box main">
+
+	    <div class="y-box presentation">
+		<div class="title">
+		    <h1>EKANS</h1>
+		    <h2>A reversed snake game.</h2>
+		</div>
+
+		<div class="manual">
+		    <p>Help <span class="y-box annoted-picture">
+			<span class="annotation">Kiki</span>
+			<img class="kiki-portrait" alt="kiki-portrait" src="./styles/assets/kiki-portrait.gif"/>
+		    </span> escape the mean snake!</p>
+
+		    <p>Earn points by eating
+			<span class="y-box annoted-picture">
+			    <span class="annotation">food</span>
+			    <span class="food-pics">
+				<img class="food-pic apple" alt="apple" src="./styles/assets/apple.gif"/>
+				<img class="food-pic carrot" alt="carrot" src="./styles/assets/carrot.gif"/>
+			    </span>
+			    
+			</span>
+			before the snake or he'll grow longer and longer...</p>
+
+		    <div class="controls">
+			<h3>Controls:</h3>
+
+			<div class="x-box">
+			    <img alt="arrow keys" src="./styles/assets/arrows.gif"/>
+			    <p>move</p>
+			</div>
+			
+		    </div>
+		</div>
+
+		<button id="start-btn">START</button>
+	    </div>
+
+	    <div id="playfield"></div>
+
+	    <div id="score"><p>0</p></div>
+	    <div id="EOG-pannel" class="y-box">
+		<h1>GAME OVER</h1>
+		<h2 id="msg"></h2>
+		<h2 id="final-score">Final score: <span>0</span>.</h2>
+	    </div>
 	</div>
-	<img alt="kiki irl" src="./styles/images/kiki-irl.png"/>
-	<button id="start-btn">I'm ready!</button>
-      </aside>
 
-      <div id="playfield">
-      </div>
-      <div id="score"><p>0</p></div>
-      <div id="EOG-pannel">
-	<h1>GAME OVER</h1>
-	<h2 id="msg"></h2>
-	<h2 id="final-score">Your final score is: <span>0</span>.</h2>
-      </div>
-    </div>
+	<footer id="credits">
+	    <p>Made by challeau</p>
+	</footer>
 
-    <footer>
-      <p id="credits">Made by challeau &euro;</p>
-    </footer>
+	<!-- <script src="./js/utils.js"></script> -->
+	<!-- <script src="./js/objs.js"></script> -->
+	<!-- <script src="./js/snake-utils.js"></script> -->
+	<!-- <script src="./js/snake.js"></script> -->
+	<script type="text/javascript">
+	  let cells = [];
 
-    <script src="./js/utils.js"></script>
-    <script src="./js/objs.js"></script>
-    <script src="./js/snake-utils.js"></script>
-    <script src="./js/snake.js"></script>
-    <script src="./js/main.js"></script>
-  </body>
+	  const playfield = {
+	    element: document.getElementById('playfield'),
+	    columns: 10,
+	    rows: 10
+	  };
+	</script>
+	<script type="module" src="js/main.js"></script>
+    </body>
 </html>

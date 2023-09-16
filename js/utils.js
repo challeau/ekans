@@ -1,50 +1,57 @@
-// return a random normal between lowBound and highBound
+import {score} from "./main.js";
+
+
+/* Returns a random number between lowBound and highBound. */
 function getRandomNumber(lowBound, highBound) {
   const rand = Math.floor(Math.random() * (highBound - lowBound) + lowBound);
   return (rand);
 }
 
-// return true if both sprites have the same coordiantes
+
+/* Return true if both sprites have the same coordiantes. */
 function compareCoordinates(sprite1, sprite2) {
   const ret = sprite1.x === sprite2.x && sprite1.y === sprite2.y ? true : false;
   return (ret);
 }
 
-// checks if cell with the coordinates x and y is empty
-function isCellEmpty(cells, x, y) {
+
+/* Checks if the cell with the coordinates x and y is empty. */
+function isCellEmpty(x, y) {
   let ret = cells[y][x].classList.length <= 1 ? true : false;
   return (ret);
 }
 
 
-// document.addEventListener('keydown', event => {
-//   switch (event.key) {
-//   case 'ArrowLeft':		// left
-//     if (snake.head.x > 0)
-//       snake.move(snake.head.x - 1, snake.head.y, 'left');
-//     break;
-//   case 'ArrowUp':		// up
-//     if (snake.head.y > 0)
-//       snake.move(snake.head.x, snake.head.y - 1, 'up');
-//     break;
-//   case 'ArrowRight':		// right
-//     if (snake.head.x < playfield.columns - 1)
-//       snake.move(snake.head.x + 1, snake.head.y, 'right');
-//     break;
-//   case 'ArrowDown':		// down
-//     if (snake.head.y < playfield.rows - 1)
-//       snake.move(snake.head.x, snake.head.y + 1, 'down');
-//     break;
-//   case ' ':
-//     snake.grow('left');
-//   }
-//   for (const food of foods){
-//     console.log(`${snake.head.y}:${snake.head.x} ${food.y}:${food.x} `, compareCoordinates(snake.head, food) === true);
-//     if (compareCoordinates(snake.head, food) === true){
-//       let id = foods.find(e => (e.x === snake.head.x && e.y === snake.head.y));
-//       foods.splice(id, 1);
-//       snake.grow(snake.tail.dir);
-//     }
-//   }
-// });
+/* Checks for collisions between the snake and kiki, the snake and food, and kiki and food. */
+function checkForCollisions(kiki, snake ,foods) {
+  let ret = 0;
+  const snakeCoords = [snake.head, snake.body, snake.tail].flat();
 
+  // collisions with food
+  for (const food of foods){
+    if (compareCoordinates(kiki, food) === true){
+      let id = foods.find(sprite => sprite.x == kiki.x && sprite.y == kiki.y);
+      score.textContent = Number(score.textContent) + food.points;
+      foods.splice(id, 1);
+    }
+
+    if (compareCoordinates(snake.head, food) === true){
+      let id = foods.find(sprite => sprite.x == snake.head.x && sprite.y === snake.head.y);
+      snake.grow(snake.tail.dir);
+      foods.splice(id, 1);
+    }
+  }
+
+  // snake collision with Kiki
+  if (snakeCoords.some(snakePart => compareCoordinates(snakePart, kiki)))
+    ret = 1;
+  snakeCoords.shift();
+
+  // snake collision with self
+  if (snakeCoords.some(snakePart => compareCoordinates(snakePart, snake.head)))
+    ret = 2;
+
+  return (ret);
+}
+
+export {getRandomNumber, checkForCollisions, compareCoordinates, isCellEmpty};
