@@ -1,5 +1,5 @@
 import {Sprite} from "./sprite.js";
-import {getRandomNumber, compareCoordinates, checkForCollisions} from "./utils.js";
+import {getRandomNumber, checkForCollisions} from "./utils.js";
 import * as utils from "./snake-utils.js";
 import {endGame} from "./game.js";
 
@@ -104,10 +104,8 @@ export class Snake {
     const target = utils.getClosestSprite(this.head, potentialTargets);
 
     const nextCell = utils.getNextCoordinates(target, this.head);
-    if (!nextCell){
-      console.log('oh.');
+    if (!nextCell)
       endGame(3);  // no target cell == snake is stuck == outcome 3
-    }
 
     console.log(`targetting ${target.type} at ${target.y}:${target.x}
     curr: ${this.head.y}:${this.head.x}, nxt stp ${nextCell.y}:${nextCell.x}`);

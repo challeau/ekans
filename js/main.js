@@ -1,6 +1,4 @@
 import {startGame} from "./game.js";
-import {Food} from "./food.js";
-import {getRandomNumber} from "./utils.js";
 
 // DOM objects
 const score = document.querySelector('#score p');
@@ -10,7 +8,7 @@ const startBtn = document.getElementById('start-btn');
 let kiki, snake;
 
 
-// events
+// Start button event
 startBtn.addEventListener('click', () => {
   if (playfield.element.childElementCount === 0){
     // start the game
@@ -18,6 +16,7 @@ startBtn.addEventListener('click', () => {
   }
 });
 
+// Player input listener
 document.addEventListener('keydown', event => {
   if (!kiki)
     return ;

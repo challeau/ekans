@@ -2,28 +2,36 @@ import {score} from "./main.js";
 import {endGame} from "./game.js";
 
 
-/* Returns a random number between lowBound and highBound. */
+/**
+ * Returns a random number between two bounds.
+ * @param {number} lowBound - lower limit.
+ * @param {number} highBound - higher limit.
+ * @returns {number}
+ */
 function getRandomNumber(lowBound, highBound) {
   const rand = Math.floor(Math.random() * (highBound - lowBound) + lowBound);
   return (rand);
 }
 
 
-/* Return true if both sprites have the same coordiantes. */
-function compareCoordinates(sprite1, sprite2) {
-  const ret = sprite1.x === sprite2.x && sprite1.y === sprite2.y ? true : false;
-  return (ret);
-}
-
-
-/* Checks if the cell with the coordinates x and y is empty. */
+/**
+ * Checks if a cell is empty.
+ * @param {number} x - the X coordinate of the cell.
+ * @param {number} y - the Y coordinate of the cell.
+ * @returns {boolean}
+ */
 function isCellEmpty(x, y) {
   let cellClassList = cells[y][x].classList.value.replaceAll('cell', '').trim();
   return (cellClassList == "");
 }
 
 
-/* Checks for collisions between the snake and kiki, the snake and food, and kiki and food. */
+/**
+ * Checks for collisions between the snake and kiki, the snake and food
+ * and kiki and food.
+ * @param {Snake} snakeObj - the snake, only used when we check collisions
+ *			     after a snake move.
+ */
 function checkForCollisions(snakeObj=undefined) {
   for (let x of Array(playfield.columns).keys()){
     for (let y of Array(playfield.rows).keys()){

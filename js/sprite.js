@@ -1,5 +1,6 @@
 import {checkForCollisions} from "./utils.js";
 
+
 /**
  * A Sprite - represents an object in the game.
  * @classdesc

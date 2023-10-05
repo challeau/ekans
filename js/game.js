@@ -1,4 +1,3 @@
-import {Food} from "./food.js";
 import {Sprite} from "./sprite.js";
 import {Snake} from "./snake.js";
 import {getRandomNumber, checkForCollisions, isCellEmpty} from "./utils.js";
@@ -15,7 +14,9 @@ let snakeInterval;
 let foodInterval;
 
 
-/* Fills the playfield grid with cells. */
+/**
+ * Fills the playfield grid with cells.
+ */
 function setUpGrid() {
   for (let y = 0; y < playfield.rows; y++) {
     cells.push([]);
@@ -33,7 +34,10 @@ function setUpGrid() {
 }
 
 
-/* Generates the snake and Kiki sprites and places them at random on the board. */
+/**
+ * Generates the snake and Kiki sprites and places them at random on the board.
+ * @returns {[Sprite, Snake]} The kiki and snake objects.
+ */
 function setUpSprites() {
   let kiki = new Sprite(5, 1, "kiki", "right");
 
@@ -44,9 +48,9 @@ function setUpSprites() {
 }
 
 
-/*
-** Ends a game:
-*/
+/**
+ * Ends a game by clearing the intervals and resetting the display.
+ */
 function endGame(outcome, kiki, snake) {
   if (outcome === 0)
     return ;
@@ -77,20 +81,21 @@ function endGame(outcome, kiki, snake) {
   startBtn.textContent = "Restart";
 }
 
-/*
-** Starts a game:
-**    - set up the playfield grid,
-**    - set up the sprites,
-**    - set up the food and snake's intervals,
-**    - display the gird.
-**
-** Return: the kiki and snake objects.
-*/
-function startGame() {
-  setUpGrid(playfield, cells);
 
+/**
+ * Starts a game:
+ *    - set up the playfield grid,
+ *    - set up the sprites,
+ *    - set up the food and snake's intervals,
+ *    - display the gird.
+ * @returns {[Sprite, Snake]} The kiki and snake objects.
+ */
+function startGame() {
+  // setup
+  setUpGrid(playfield, cells);
   let [kiki, snake] = setUpSprites(playfield, cells);
 
+  // intervals
   foodInterval = setInterval(() => {
     let foodType = getRandomNumber(0, 4) ? "apple" : "carrot";
     let x, y;
@@ -105,7 +110,8 @@ function startGame() {
   }, getRandomNumber(5000, 6000));
 
   snakeInterval = setInterval(() =>  snake.autoTarget(kiki, foods), 600);
-  
+
+  // playfield display
   playfield.element.style.display = "grid";
   EOGpannel.style.display = "none";
   score.textContent = 0;

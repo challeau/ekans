@@ -1,6 +1,3 @@
-import {compareCoordinates} from "./utils.js";
-
-
 /**
  * Sets a body part's direction according to the snkae's general direction.
  * @param {Sprite} bodyPart - the body part to curve.
@@ -60,6 +57,7 @@ function setTailDirection(tail, body) {
  * Returns the closest Sprite to the source Sprite from a list.
  * @param {Sprite} srcSprite - the source Sprite.
  * @param {[Sprite]} potentialtargets - the list of Sprites to pick from.
+ * @returns {Sprite}
  */
 function getClosestSprite(srcSprite, potentialTargets) {
   let min = Infinity;
@@ -90,6 +88,7 @@ function getClosestSprite(srcSprite, potentialTargets) {
  * to the target.
  * @param {Sprite} target - the snake's target.
  * @param {Sprite} snakeHead - the snake's head.
+ * @returns { {x: number, y: number, dir: string} }
  */
 function getNextCoordinates(target, snakeHead) {
   const dist2Target = { x: snakeHead.x - target.x, y: snakeHead.y - target.y };
