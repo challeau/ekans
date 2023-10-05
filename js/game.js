@@ -1,7 +1,7 @@
 import {Food} from "./food.js";
 import {Sprite} from "./sprite.js";
 import {Snake} from "./snake.js";
-import {getRandomNumber, checkForCollisions} from "./utils.js";
+import {getRandomNumber, checkForCollisions, isCellEmpty} from "./utils.js";
 
 // DOM OBJECTS
 const startBtn = document.getElementById("start-btn");
@@ -13,8 +13,6 @@ const EOGscore = document.querySelector("#EOG-pannel h2 span");
 // GAME INTERVALS
 let snakeInterval;
 let foodInterval;
-
-let foods = [];
 
 
 /* Fills the playfield grid with cells. */
@@ -37,13 +35,9 @@ function setUpGrid() {
 
 /* Generates the snake and Kiki sprites and places them at random on the board. */
 function setUpSprites() {
-  let kiki = new Sprite(5, 1, "right", "kiki");
-  cells[kiki.y][kiki.x].classList.add("kiki");
+  let kiki = new Sprite(5, 1, "kiki", "right");
 
   let snake = new Snake(playfield);
-  
-  cells[snake.head.y][snake.head.x].classList.add("snake-head");
-  cells[snake.tail.y][snake.tail.x].classList.add("snake-tail");
   snake.grow("left");
 
   return [kiki, snake];
@@ -98,16 +92,19 @@ function startGame() {
   let [kiki, snake] = setUpSprites(playfield, cells);
 
   foodInterval = setInterval(() => {
-    let newFood = new Food(cells);
-    foods.push(newFood);
-  }, getRandomNumber(2000, 6000));
+    let foodType = getRandomNumber(0, 4) ? "apple" : "carrot";
+    let x, y;
 
-  snakeInterval = setInterval(() => {
-    let collision = snake.autoTarget(kiki, foods);
-    if (collision){
-      endGame(collision, kiki, snake);
-    }
-  }, 500);
+    do {
+      x = getRandomNumber(0, playfield.columns);
+      y = getRandomNumber(0, playfield.rows);
+    } while (isCellEmpty(x, y) === false);
+
+    let newFood = new Sprite(x, y, foodType);
+    foods.push(newFood);
+  }, getRandomNumber(5000, 6000));
+
+  snakeInterval = setInterval(() =>  snake.autoTarget(kiki, foods), 600);
   
   playfield.element.style.display = "grid";
   EOGpannel.style.display = "none";

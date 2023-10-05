@@ -25,12 +25,14 @@
 *** DONE limits
     CLOSED: [2022-08-10 Wed 17:59]
 ** DONE Path finding
-   CLOSED: [2022-08-10 Wed 17:59]
+CLOSED: [2022-08-10 Wed 17:59]
 * DONE snake cant reverse!
   CLOSED: [2022-08-11 Thu 15:31]
 * DONE implement food
   CLOSED: [2022-08-11 Thu 15:31]
-* TODO restart button
-* DONE score
-  CLOSED: [2022-08-11 Thu 16:28]
+* DONE better collision checks --> in Sprite.move()
+CLOSED: [2023-10-05 jeu. 19:23]
+* TODO fix snake's init move() + backwards move()
+* DONE restart button
+  CLOSED: [2023-10-03 mar. 11:34]
 * TODO calculate optimal number of squares for screen
