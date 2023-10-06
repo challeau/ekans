@@ -3,30 +3,31 @@
  * @param {Sprite} bodyPart - the body part to curve.
  * @param {string} headDirection - the direction the snake's head is going.
  */
-function setCurveDirection(bodyPart, headDirection) {
-  let direction;
+function setCurveDirection(bodyPart, headDirection, cells) {
+  let curveDirection;
 
-  switch (bodyPart[0]+headDirection){
-  case "left"+"down":
-  case "up"+"right":
-    direction = "right";
+  switch (bodyPart.dir){
+  case dir.left:
+    case dir.right:
+    if (headDirection == dir.down || headDirection == dir.up)
+      curveDirection = dir.up;
     break;
-  case "right"+"down":
-  case "up"+"left":
-    direction = "down";
+  case dir.up:
+    if (headDirection == dir.right)
+      curveDirection = dir.right;
+    else if (headDirection == dir.left)
+      curveDirection = dir.down;
     break;
-  case "right"+"up":
-  case "down"+"left":
-    direction = "left";
-    break;
-  case "down"+"right":
-  case "left"+"up":
-    direction = "up";
+  case dir.down:
+    if (headDirection == dir.left)
+      curveDirection = dir.left;
+    else if (headDirection == dir.right)
+      curveDirection = dir.up;
     break;
   }
 
-  cells[bodyPart.y][bodyPart.x].setAttribute('direction', direction);
-  bodyPart.dir = direction;
+  cells[bodyPart.y][bodyPart.x].setAttribute('direction', curveDirection);
+  bodyPart.dir = curveDirection;
 }
 
 
@@ -35,21 +36,21 @@ function setCurveDirection(bodyPart, headDirection) {
  * @param {Sprite} tail - the snake's tail.
  * @param {[Sprite]} body - the snake's body.
  */
-function setTailDirection(tail, body) {
+  function setTailDirection(tail, body, cells) {
   let direction = "";
   let diffX = tail.x - body[body.length - 1].x;
   let diffY = tail.y - body[body.length - 1].y;
 
   if (diffX === 0)
-    direction = diffY > 0 ? "up" : "down";
+    direction = diffY > 0 ? dir.up : dir.down;
   else if (diffY === 0)
-    direction = diffX > 0 ? "left" : "right";
+    direction = diffX > 0 ? dir.left : dir.right;
 
   cells[tail.y][tail.x].setAttribute('direction', direction);
   tail.dir = direction;
 
-  if (!cells[tail.y][tail.x].classList.contains('snake-tail'))
-    cells[tail.y][tail.x].classList.add('snake-tail');
+  // if (!cells[tail.y][tail.x].classList.contains('snake-tail'))
+  //   cells[tail.y][tail.x].classList.add('snake-tail');
 }
 
 
@@ -90,12 +91,15 @@ function getClosestSprite(srcSprite, potentialTargets) {
  * @param {Sprite} snakeHead - the snake's head.
  * @returns { {x: number, y: number, dir: string} }
  */
-function getNextCoordinates(target, snakeHead) {
+function getNextCoordinates(target, snakeHead, cells, playfield) {
   const dist2Target = { x: snakeHead.x - target.x, y: snakeHead.y - target.y };
   let stepX = dist2Target.x > 0 ? snakeHead.x - 1 : snakeHead.x + 1;
   let stepY = dist2Target.y > 0 ? snakeHead.y - 1 : snakeHead.y + 1;
   let furthest = Math.abs(dist2Target.x) >= Math.abs(dist2Target.y) ? 'x' : 'y';
 
+  if (dist2Target.x == 0 && dist2Target.y == 0)
+    return null;
+  
   // check if the snake can move along the x or y axis
   let canMoveX, canMoveY = false;
   let targetCellX = cells[snakeHead.y][stepX];
@@ -109,15 +113,15 @@ function getNextCoordinates(target, snakeHead) {
 
   if (!canMoveX && !canMoveY){
     stepX = dist2Target.x < 0 ? snakeHead.x - 1 : snakeHead.x + 1;
-    stepY = dist2Target.y > 0 ? snakeHead.y - 1 : snakeHead.y + 1;
+    stepY = dist2Target.y < 0 ? snakeHead.y - 1 : snakeHead.y + 1;
     furthest = Math.abs(dist2Target.x) >= Math.abs(dist2Target.y) ? 'x' : 'y';
     targetCellX = cells[snakeHead.y][stepX];
     targetCellY = cells[stepY][snakeHead.x];
 
-    if (stepX <= playfield.columns && !targetCellX.classList.value.match(/snake/))
+    if (stepX < playfield.columns && !targetCellX.classList.value.match(/snake/))
       canMoveX = true;
 
-    if (stepY <= playfield.rows && !targetCellY.classList.value.match(/snake/))
+    if (stepY < playfield.rows && !targetCellY.classList.value.match(/snake/))
       canMoveY = true;
   }
 

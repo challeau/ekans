@@ -1,18 +1,14 @@
-import {startGame} from "./game.js";
-
-// DOM objects
-const score = document.querySelector('#score p');
-const startBtn = document.getElementById('start-btn');
+import {Game} from "./game.js";
 
 // Vars
 let kiki, snake;
-
+let game = new Game();
 
 // Start button event
-startBtn.addEventListener('click', () => {
-  if (playfield.element.childElementCount === 0){
+game.startBtn.addEventListener('click', () => {
+  if (game.playfield.element.childElementCount === 0){
     // start the game
-    [kiki, snake] = startGame(playfield, cells);
+    [kiki, snake] = game.start();
   }
 });
 
@@ -24,22 +20,22 @@ document.addEventListener('keydown', event => {
   switch (event.key) {
   case 'ArrowLeft':		// left
     if (kiki.x > 0)
-      kiki.move(kiki.x - 1, kiki.y, 'left');
+      kiki.move(kiki.x - 1, kiki.y, dir.left);
     break;
   case 'ArrowUp':		// up
     if (kiki.y > 0)
-      kiki.move(kiki.x, kiki.y -1, 'up');
+      kiki.move(kiki.x, kiki.y -1, dir.up);
     break;
   case 'ArrowRight':		// right
-    if (kiki.x < playfield.columns - 1)
-      kiki.move(kiki.x + 1, kiki.y, 'right');
+    if (kiki.x < game.playfield.columns - 1)
+      kiki.move(kiki.x + 1, kiki.y, dir.right);
     break;
   case 'ArrowDown':		// down
-    if (kiki.y < playfield.rows - 1)
-      kiki.move(kiki.x, kiki.y + 1, 'down');
+    if (kiki.y < game.playfield.rows - 1)
+      kiki.move(kiki.x, kiki.y + 1, dir.down);
     break;
   }
 });
 
 
-export {score};
+export {game};

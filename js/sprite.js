@@ -1,4 +1,4 @@
-import {checkForCollisions} from "./utils.js";
+import {game} from "./main.js";
 
 
 /**
@@ -18,7 +18,7 @@ class Sprite {
     this.y = y;
     this.dir = dir;
     this.type = type;
-    cells[y][x].classList.add(this.type);
+    game.cells[y][x].classList.add(this.type);
   }
 
   /**
@@ -28,20 +28,20 @@ class Sprite {
    * @param {string} dir - the direction the sprite is going.
    */
   move(targetX, targetY, dir=undefined) {
-    cells[this.y][this.x].className = 'cell';
-    cells[this.y][this.x].setAttribute('curve', 'false');
+    game.cells[this.y][this.x].classList.remove(this.type);
+    game.cells[this.y][this.x].setAttribute('curve', 'false');
 
     this.x = targetX;
     this.y = targetY;
-    cells[targetY][targetX].classList.add(this.type, 'cell');
+    game.cells[targetY][targetX].classList.add(this.type, 'cell');
 
     if (dir){
       this.dir = dir;
-      cells[this.y][this.x].setAttribute('direction', dir);
+      game.cells[this.y][this.x].setAttribute('direction', dir);
     }
 
     if (this.type == "kiki")
-      checkForCollisions();
+      game.checkForCollisions();
   }
 }
 

@@ -1,7 +1,7 @@
 import {Sprite} from "./sprite.js";
-import {getRandomNumber, checkForCollisions} from "./utils.js";
+import {getRandomNumber} from "./utils.js";
 import * as utils from "./snake-utils.js";
-import {endGame} from "./game.js";
+import {game} from "./main.js";
 
 
 /**
@@ -12,14 +12,14 @@ export class Snake {
 
   /**
    * @class - Creates a new Snake.
-   * @param { {columns: number, rows: number} } playfield.
+   * @param { {columns: number, rows: number} } game.playfield.
    */
-  constructor(playfield) {
-    let x = getRandomNumber(2, playfield.columns);
-    let y = getRandomNumber(0, playfield.rows);
+  constructor() {
+    let x = getRandomNumber(2, game.playfield.columns);
+    let y = getRandomNumber(0, game.playfield.rows);
 
-    this.head = new Sprite(x, y, 'snake-head', 'right');
-    this.tail = new Sprite(this.head.x - 1, this.head.y, 'snake-tail', 'right');
+    this.head = new Sprite(x, y, 'snake-head', dir.right);
+    this.tail = new Sprite(this.head.x - 1, this.head.y, 'snake-tail', dir.right);
     this.body = [];
   }
 
@@ -28,32 +28,33 @@ export class Snake {
    * @param {string} direction - the direction where the snake is headed.
    */
   grow(direction) {
+    console.log('grow', this.tail.dir);
     let tailTarget;
 
     switch (direction){
-    case 'left':
+    case dir.right:
       tailTarget = {x: this.tail.x - 1, y: this.tail.y};
       break;
-    case 'right':
+    case dir.left:
       tailTarget = {x: this.tail.x + 1, y: this.tail.y};
       break;
-    case 'up':
+    case dir.down:
       tailTarget = {x: this.tail.x, y: this.tail.y - 1};
       break;
-    case 'down':
+    case dir.up:
       tailTarget = {x: this.tail.x, y: this.tail.y + 1};
       break;
     }
 
-    // move the tail 1 tile torwards direction
-    this.tail.move(tailTarget.x, tailTarget.y);
-
-    // put a new body part instead of the tail
+    // create a new body part where the tail is
     const newBodyPart = new Sprite(this.tail.x, this.tail.y, 'snake-body', this.tail.dir);
     this.body.push(newBodyPart);
 
+    // move the tail 1 tile torwards direction
+    this.tail.move(tailTarget.x, tailTarget.y, direction);
+
     // set new tail direction
-    utils.setTailDirection(this.tail, this.body);
+    utils.setTailDirection(this.tail, this.body, game.cells);
   }
 
   /**
@@ -66,17 +67,17 @@ export class Snake {
     const lastBodyPart =  this.body.pop();
 
     // change last body part to tail
-    cells[lastBodyPart.y][lastBodyPart.x].classList.remove('snake-body');
+    game.cells[lastBodyPart.y][lastBodyPart.x].classList.remove('snake-body');
     this.tail.move(lastBodyPart.x, lastBodyPart.y);
 
     // move head to target
     this.head.move(targetX, targetY);
  
     // change old head spot to a body part
-    cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
+    game.cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');
     this.body.unshift(newBodyPart);
 
-    utils.setTailDirection(this.tail, this.body);
+    utils.setTailDirection(this.tail, this.body, game.cells);
   }
 
   /**
@@ -86,33 +87,31 @@ export class Snake {
    */
   orient(headDirection) {
     if (this.body[0].dir !== headDirection){
-      cells[this.body[0].y][this.body[0].x].setAttribute('curve', 'true');
-      utils.setCurveDirection(this.body[0], headDirection);
+      game.cells[this.body[0].y][this.body[0].x].setAttribute('curve', 'true');
+      utils.setCurveDirection(this.body[0], headDirection, game.cells);
     }
 
-    cells[this.head.y][this.head.x].setAttribute('direction', headDirection);
+    game.cells[this.head.y][this.head.x].setAttribute('direction', headDirection);
     this.head.dir = headDirection;
   }
 
   /**
    * Determines the snake's target and computes the next step to get closer to the target.
    * @param {Sprite} kiki - the Kiki object.
-   * @param {[Sprite]} foods - an array of the playfield's food objects.
+   * @param {[Sprite]} foods - an array of the game.playfield's food objects.
    */
-  autoTarget(kiki, foods) {
-    const potentialTargets = [kiki, ... foods];
+  autoTarget() {
+    const potentialTargets = [game.kiki, ...game.foods];
     const target = utils.getClosestSprite(this.head, potentialTargets);
 
-    const nextCell = utils.getNextCoordinates(target, this.head);
+    const nextCell = utils.getNextCoordinates(target, this.head, game.cells, game.playfield);
     if (!nextCell)
-      endGame(3);  // no target cell == snake is stuck == outcome 3
+      game.end(2);  // no target cell == snake is stuck == outcome 3
 
     console.log(`targetting ${target.type} at ${target.y}:${target.x}
     curr: ${this.head.y}:${this.head.x}, nxt stp ${nextCell.y}:${nextCell.x}`);
 
     this.move(nextCell.x, nextCell.y);
-    this.orient(this.head .direction);
-
-    checkForCollisions(this);
+    this.orient(this.head.dir);
   }
 }

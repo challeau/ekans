@@ -1,123 +1,166 @@
 import {Sprite} from "./sprite.js";
 import {Snake} from "./snake.js";
-import {getRandomNumber, checkForCollisions, isCellEmpty} from "./utils.js";
-
-// DOM OBJECTS
-const startBtn = document.getElementById("start-btn");
-const score = document.querySelector('#score p');
-const EOGpannel = document.getElementById("EOG-pannel");
-const EOGmessage = document.getElementById("msg");
-const EOGscore = document.querySelector("#EOG-pannel h2 span");
-
-// GAME INTERVALS
-let snakeInterval;
-let foodInterval;
+import {getRandomNumber, isCellEmpty} from "./utils.js";
 
 
-/**
- * Fills the playfield grid with cells.
- */
-function setUpGrid() {
-  for (let y = 0; y < playfield.rows; y++) {
-    cells.push([]);
+export class Game {
+  constructor(){
+    // DOM OBJECTS
+    this.startBtn = document.getElementById("start-btn");
+    this.score = document.querySelector('#score p');
+    this.EOGpannel = document.getElementById("EOG-pannel");
+    this.EOGmessage = document.getElementById("msg");
+    this.EOGscore = document.querySelector("#EOG-pannel h2 span");
 
-    for (let x = 0; x < playfield.columns; x++){
-      let div = document.createElement("div");
-      div.classList.add("cell");
-      div.dataset.x = x;
-      div.dataset.y = y;
+    // playfield
+    this.playfield = {
+      element: document.getElementById('playfield'),
+      columns: 10,
+      rows: 10
+    };
+    
+    this.cells = [];
 
-      playfield.element.append(div);
-      cells[y].push(div);
+    this.foods = [];
+  }
+
+  /**
+   * Fills the playfield grid with cells.
+   */
+  setUpGrid() {
+    for (let y = 0; y < this.playfield.rows; y++) {
+      this.cells.push([]);
+
+      for (let x = 0; x < this.playfield.columns; x++){
+	let div = document.createElement("div");
+	div.classList.add("cell");
+	div.dataset.x = x;
+	div.dataset.y = y;
+
+	this.playfield.element.append(div);
+	this.cells[y].push(div);
+      }
     }
+  }
+
+  /**
+   * Generates the snake and Kiki sprites and places them on the board.
+   */
+  setUpSprites() {
+    this.kiki = new Sprite(5, 1, "kiki", dir.right);
+
+    this.snake = new Snake(this.playfield, this.cells);
+    this.snake.grow(dir.left);
+  }
+
+  /**
+   * Checks for collisions between the snake and kiki, the snake and food
+   * and kiki and food.
+   * @param {Snake} snakeObj - the snake, only used when we check collisions
+   *			     after a snake move.
+   */
+  checkForCollisions(snakeMove=false) {
+    for (let x of Array(this.playfield.columns).keys()){
+      for (let y of Array(this.playfield.rows).keys()){
+	let classList = this.cells[y][x].classList.value;
+	let kiki = classList.match(/kiki/);
+	let food = classList.match(/carrot|apple/);
+	let snake = classList.match(/snake-head|snake-tail|snake-body/g);
+
+	if (!kiki && !food && !snake)
+	  continue;
+
+	if (food && (kiki || snake)){
+	  if (kiki){
+	    let points = food == "apple" ? 10 : 20;
+	    this.score.textContent = Number(score.textContent) + points;
+	  }
+	  else if (snakeMove)
+	    this.snake.grow(this.snake.tail.dir);
+
+	  let id = this.foods.indexOf(f => f.x == x && f.y == y);
+	  this.cells[y][x].classList.remove(food);
+	  this.foods = this.foods.toSpliced(id, 1);
+	}
+
+	else if (kiki && snake)
+	  this.end(0);
+
+	else if (snakeMove && snake && snake.length > 1)
+	  this.end(1);
+      }
   }
 }
 
+  /**
+   * Ends a game by clearing the intervals and resetting the display.
+   * @param {number} outcome - The end-of-game scenario.
+   */
+  end(outcome) {
+    const msgs = ["Kiki died a painful death! You should be ashamed of yourself.",
+		  "The snake has eaten itself. Here's an extra 200 points.",
+		  "The snake got stuck !"];
 
-/**
- * Generates the snake and Kiki sprites and places them at random on the board.
- * @returns {[Sprite, Snake]} The kiki and snake objects.
- */
-function setUpSprites() {
-  let kiki = new Sprite(5, 1, "kiki", "right");
+    clearInterval(this.snakeInterval);
+    clearInterval(this.foodInterval);
 
-  let snake = new Snake(playfield);
-  snake.grow("left");
+    // this.playfield.element.innerHTML = "";
+    // this.playfield.element.style.display = "none";
 
-  return [kiki, snake];
-}
+    // this.cells.forEach(cell => cell.className = "");
+    // this.cells = [];
 
+    // this.foods = [];
+    // this.kiki = this.snake = undefined;
 
-/**
- * Ends a game by clearing the intervals and resetting the display.
- */
-function endGame(outcome, kiki, snake) {
-  if (outcome === 0)
-    return ;
+    // if (outcome === 2)
+    //   this.score.textContent = Number(this.score.textContent) + 200;
 
-  const msgs = ["Kiki died a painful death! You should be ashamed of yourself.",
-		"The snake has eaten itself. Here's an extra 200 points.",
-		"The snake got stuck !"];
+    // this.EOGscore.textContent = score.textContent;
+    // this.EOGmessage.textContent = msgs[outcome];
+    // this.EOGpannel.style.display = "flex";
+    
+    // this.startBtn.textContent = "Restart";
+  }
 
-  clearInterval(snakeInterval);
-  clearInterval(foodInterval);
-
-  playfield.element.innerHTML = "";
-  playfield.element.style.display = "none";
-
-  cells.forEach(cell => cell.className = "");
-  cells = [];
-
-  foods = [];
-  kiki = snake = undefined;
-
-  if (outcome === 2)
-    score.textContent = Number(score.textContent) + 200;
-
-  EOGscore.textContent = score.textContent;
-  EOGmessage.textContent = msgs[outcome - 1];
-  EOGpannel.style.display = "flex";
   
-  startBtn.textContent = "Restart";
+  /**
+   * Starts a game:
+   *    - set up the playfield grid,
+   *    - set up the sprites,
+   *    - set up the food and snake's intervals,
+   *    - display the gird.
+   * @returns {[Sprite, Snake]} The kiki and snake objects.
+   */
+  start(){
+    // setup
+    this.setUpGrid();
+    this.setUpSprites();
+
+    // intervals
+    this.foodInterval = setInterval(() => {
+      let foodType = getRandomNumber(0, 4) ? "apple" : "carrot";
+      let x, y;
+
+      do {
+	x = getRandomNumber(0, this.playfield.columns);
+	y = getRandomNumber(0, this.playfield.rows);
+      } while (isCellEmpty(x, y, this.cells) === false);
+
+      let newFood = new Sprite(x, y, foodType);
+      this.foods.push(newFood);
+    }, getRandomNumber(2500, 3500));
+
+    this.snakeInterval = setInterval(() => {
+      this.snake.autoTarget(this.kiki, this.foods);
+      this.checkForCollisions(true);
+    }, 550);
+
+    // playfield display
+    this.playfield.element.style.display = "grid";
+    this.EOGpannel.style.display = "none";
+    this.score.textContent = 0;
+
+    return [this.kiki, this.snake];
+  }
 }
-
-
-/**
- * Starts a game:
- *    - set up the playfield grid,
- *    - set up the sprites,
- *    - set up the food and snake's intervals,
- *    - display the gird.
- * @returns {[Sprite, Snake]} The kiki and snake objects.
- */
-function startGame() {
-  // setup
-  setUpGrid(playfield, cells);
-  let [kiki, snake] = setUpSprites(playfield, cells);
-
-  // intervals
-  foodInterval = setInterval(() => {
-    let foodType = getRandomNumber(0, 4) ? "apple" : "carrot";
-    let x, y;
-
-    do {
-      x = getRandomNumber(0, playfield.columns);
-      y = getRandomNumber(0, playfield.rows);
-    } while (isCellEmpty(x, y) === false);
-
-    let newFood = new Sprite(x, y, foodType);
-    foods.push(newFood);
-  }, getRandomNumber(2500, 3500));
-
-  snakeInterval = setInterval(() =>  snake.autoTarget(kiki, foods), 500);
-
-  // playfield display
-  playfield.element.style.display = "grid";
-  EOGpannel.style.display = "none";
-  score.textContent = 0;
-
-  return [kiki, snake];
-}
-
-
-export {startGame, endGame};
