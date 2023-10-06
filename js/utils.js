@@ -61,4 +61,4 @@ function checkForCollisions(snakeObj=undefined) {
   }
 }
 
-export {getRandomNumber, checkForCollisions, compareCoordinates, isCellEmpty};
+export {getRandomNumber, checkForCollisions, isCellEmpty};

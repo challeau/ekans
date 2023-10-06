@@ -107,9 +107,9 @@ function startGame() {
 
     let newFood = new Sprite(x, y, foodType);
     foods.push(newFood);
-  }, getRandomNumber(5000, 6000));
+  }, getRandomNumber(2500, 3500));
 
-  snakeInterval = setInterval(() =>  snake.autoTarget(kiki, foods), 600);
+  snakeInterval = setInterval(() =>  snake.autoTarget(kiki, foods), 500);
 
   // playfield display
   playfield.element.style.display = "grid";
