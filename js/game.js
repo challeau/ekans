@@ -53,6 +53,9 @@ export class Game {
     this.snake.grow(dir.left);
   }
 
+  wts(f, x, y){
+    return f.x == x && f.y == y;
+  }
   /**
    * Checks for collisions between the snake and kiki, the snake and food
    * and kiki and food.
@@ -63,30 +66,30 @@ export class Game {
     for (let x of Array(this.playfield.columns).keys()){
       for (let y of Array(this.playfield.rows).keys()){
 	let classList = this.cells[y][x].classList.value;
-	let kiki = classList.match(/kiki/);
-	let food = classList.match(/carrot|apple/);
-	let snake = classList.match(/snake-head|snake-tail|snake-body/g);
+	let kikiMatch = classList.match(/kiki/);
+	let foodMatch = classList.match(/carrot|apple/);
+	let snakeMatch = classList.match(/snake-head|snake-tail|snake-body/g);
 
-	if (!kiki && !food && !snake)
+	if (!kikiMatch && !foodMatch && !snakeMatch)
 	  continue;
 
-	if (food && (kiki || snake)){
-	  if (kiki){
-	    let points = food == "apple" ? 10 : 20;
+	if (foodMatch && (kikiMatch || snakeMatch)){
+	  if (kikiMatch){
+	    let points = foodMatch == "apple" ? 10 : 20;
 	    this.score.textContent = Number(score.textContent) + points;
 	  }
 	  else if (snakeMove)
 	    this.snake.grow(this.snake.tail.dir);
 
-	  let id = this.foods.indexOf(f => f.x == x && f.y == y);
-	  this.cells[y][x].classList.remove(food);
+	  let id = this.foods.findIndex(f => f.x == x && f.y == y);
+	  this.cells[y][x].classList.remove(foodMatch);
 	  this.foods = this.foods.toSpliced(id, 1);
 	}
 
-	else if (kiki && snake)
+	else if (kikiMatch && snakeMatch)
 	  this.end(0);
 
-	else if (snakeMove && snake && snake.length > 1)
+	else if (snakeMove && snakeMatch && snakeMatch.length > 1)
 	  this.end(1);
       }
   }
@@ -104,23 +107,23 @@ export class Game {
     clearInterval(this.snakeInterval);
     clearInterval(this.foodInterval);
 
-    // this.playfield.element.innerHTML = "";
-    // this.playfield.element.style.display = "none";
+    this.playfield.element.innerHTML = "";
+    this.playfield.element.style.display = "none";
 
-    // this.cells.forEach(cell => cell.className = "");
-    // this.cells = [];
+    this.cells.forEach(cell => cell.className = "");
+    this.cells = [];
 
-    // this.foods = [];
-    // this.kiki = this.snake = undefined;
+    this.foods = [];
+    this.kiki = this.snake = undefined;
 
-    // if (outcome === 2)
-    //   this.score.textContent = Number(this.score.textContent) + 200;
+    if (outcome === 2)
+      this.score.textContent = Number(this.score.textContent) + 200;
 
-    // this.EOGscore.textContent = score.textContent;
-    // this.EOGmessage.textContent = msgs[outcome];
-    // this.EOGpannel.style.display = "flex";
+    this.EOGscore.textContent = score.textContent;
+    this.EOGmessage.textContent = msgs[outcome];
+    this.EOGpannel.style.display = "flex";
     
-    // this.startBtn.textContent = "Restart";
+    this.startBtn.textContent = "Restart";
   }
 
   
@@ -154,7 +157,7 @@ export class Game {
     this.snakeInterval = setInterval(() => {
       this.snake.autoTarget(this.kiki, this.foods);
       this.checkForCollisions(true);
-    }, 550);
+    }, 750);
 
     // playfield display
     this.playfield.element.style.display = "grid";

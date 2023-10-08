@@ -70,7 +70,7 @@ function getClosestSprite(srcSprite, potentialTargets) {
     deltaX = Math.abs(srcSprite.x - target.x);
     deltaY = Math.abs(srcSprite.y - target.y);
 
-    if (deltaX + deltaY > min)
+    if (deltaX + deltaY > min || (deltaX == 0 && deltaY == 0))
       continue;
 
     // we don't want to target food unless it's close by

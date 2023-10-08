@@ -71,7 +71,7 @@ export class Snake {
     this.tail.move(lastBodyPart.x, lastBodyPart.y);
 
     // move head to target
-    this.head.move(targetX, targetY);
+    this.head.move(targetX, targetY, this.head.dir);
  
     // change old head spot to a body part
     game.cells[newBodyPart.y][newBodyPart.x].classList.add('cell', 'snake-body');

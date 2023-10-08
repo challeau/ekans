@@ -33,6 +33,9 @@ CLOSED: [2022-08-10 Wed 17:59]
 * DONE better collision checks --> in Sprite.move()
 CLOSED: [2023-10-05 jeu. 19:23]
 * TODO fix snake's init move() + backwards move()
+* DONE fix snake eating
+CLOSED: [2023-10-08 dim. 15:31]
 * DONE restart button
   CLOSED: [2023-10-03 mar. 11:34]
 * TODO calculate optimal number of squares for screen
+
