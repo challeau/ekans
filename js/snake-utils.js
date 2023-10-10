@@ -1,16 +1,24 @@
 /**
- * Sets a body part's direction according to the snkae's general direction.
- * @param {Sprite} bodyPart - the body part to curve.
- * @param {string} headDirection - the direction the snake's head is going.
+ * Sets a body part's direction according to the Snake's general direction.
+ * @param {Sprite} bodyPart - The body part to curve.
+ * @param {number} headDirection - The direction the Snake's head is going.
+ * @param {[Element]} cells - The playfield's cells.
  */
 function setCurveDirection(bodyPart, headDirection, cells) {
   let curveDirection;
 
   switch (bodyPart.dir){
   case dir.left:
-    case dir.right:
-    if (headDirection == dir.down || headDirection == dir.up)
+    if (headDirection == dir.up)
       curveDirection = dir.up;
+    if (headDirection == dir.down)
+      curveDirection = dir.right;
+    break;
+  case dir.right:
+    if (headDirection == dir.up)
+      curveDirection = dir.left;
+    if (headDirection == dir.down)
+      curveDirection = dir.down;
     break;
   case dir.up:
     if (headDirection == dir.right)
@@ -26,15 +34,16 @@ function setCurveDirection(bodyPart, headDirection, cells) {
     break;
   }
 
-  cells[bodyPart.y][bodyPart.x].setAttribute('direction', curveDirection);
+  cells[bodyPart.y][bodyPart.x].setAttribute("direction", curveDirection);
   bodyPart.dir = curveDirection;
 }
 
 
 /**
- * Sets the tail's direction according to the snake's body direction.
+ * Sets the tail's direction according to the Snake's body direction.
  * @param {Sprite} tail - the snake's tail.
  * @param {[Sprite]} body - the snake's body.
+ * @param {[Element]} cells - The playfield's cells.
  */
   function setTailDirection(tail, body, cells) {
   let direction = "";
@@ -46,7 +55,7 @@ function setCurveDirection(bodyPart, headDirection, cells) {
   else if (diffY === 0)
     direction = diffX > 0 ? dir.left : dir.right;
 
-  cells[tail.y][tail.x].setAttribute('direction', direction);
+  cells[tail.y][tail.x].setAttribute("direction", direction);
   tail.dir = direction;
 
   // if (!cells[tail.y][tail.x].classList.contains('snake-tail'))
@@ -85,17 +94,19 @@ function getClosestSprite(srcSprite, potentialTargets) {
 
 
 /**
- * Computes and returns the next coordinates to reach  to move the snake closer
+ * Computes and returns the next coordinates to reach to move the Snake closer
  * to the target.
  * @param {Sprite} target - the snake's target.
  * @param {Sprite} snakeHead - the snake's head.
+ * @param {[Element]} cells - The playfield's cells.
+ * @param {Object} playfield.
  * @returns { {x: number, y: number, dir: string} }
  */
 function getNextCoordinates(target, snakeHead, cells, playfield) {
   const dist2Target = { x: snakeHead.x - target.x, y: snakeHead.y - target.y };
   let stepX = dist2Target.x > 0 ? snakeHead.x - 1 : snakeHead.x + 1;
   let stepY = dist2Target.y > 0 ? snakeHead.y - 1 : snakeHead.y + 1;
-  let furthest = Math.abs(dist2Target.x) >= Math.abs(dist2Target.y) ? 'x' : 'y';
+  let furthest = Math.abs(dist2Target.x) >= Math.abs(dist2Target.y) ? "x" : "y";
 
   if (dist2Target.x == 0 && dist2Target.y == 0)
     return null;
@@ -114,7 +125,7 @@ function getNextCoordinates(target, snakeHead, cells, playfield) {
   if (!canMoveX && !canMoveY){
     stepX = dist2Target.x < 0 ? snakeHead.x - 1 : snakeHead.x + 1;
     stepY = dist2Target.y < 0 ? snakeHead.y - 1 : snakeHead.y + 1;
-    furthest = Math.abs(dist2Target.x) >= Math.abs(dist2Target.y) ? 'x' : 'y';
+    furthest = Math.abs(dist2Target.x) >= Math.abs(dist2Target.y) ? "x" : "y";
     targetCellX = cells[snakeHead.y][stepX];
     targetCellY = cells[stepY][snakeHead.x];
 
@@ -126,11 +137,11 @@ function getNextCoordinates(target, snakeHead, cells, playfield) {
   }
 
   // determine next move
-  if (canMoveY && furthest == 'x' || !canMoveY)
-    return ({ x: stepX, y: snakeHead.y, dir: dist2Target.x > 0 ? "left" : "right"});
+  if (canMoveY && furthest == "x" || !canMoveY)
+    return ({ x: stepX, y: snakeHead.y, dir: dist2Target.x > 0 ? dir.left : dir.right});
 
   else if (canMoveY)
-    return ({ x: snakeHead.x, y: stepY, dir: dist2Target.y > 0 ? "up" : "down"});
+    return ({ x: snakeHead.x, y: stepY, dir: dist2Target.y > 0 ? dir.up : dir.down});
 
   return null;
 }

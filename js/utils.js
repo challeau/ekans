@@ -14,10 +14,11 @@ function getRandomNumber(lowBound, highBound) {
  * Checks if a cell is empty.
  * @param {number} x - the X coordinate of the cell.
  * @param {number} y - the Y coordinate of the cell.
+ * @param {[Element]} cells - The playfield's cells.
  * @returns {boolean}
  */
 function isCellEmpty(x, y, cells) {
-  let cellClassList = cells[y][x].classList.value.replaceAll('cell', '').trim();
+  let cellClassList = cells[y][x].classList.value.replaceAll("cell", "").trim();
   return (cellClassList == "");
 }
 

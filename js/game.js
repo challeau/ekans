@@ -3,24 +3,29 @@ import {Snake} from "./snake.js";
 import {getRandomNumber, isCellEmpty} from "./utils.js";
 
 
+/**
+ * Set of objects and mecanics for a game.
+ * @classdesc
+ */
 export class Game {
   constructor(){
     // DOM OBJECTS
     this.startBtn = document.getElementById("start-btn");
-    this.score = document.querySelector('#score p');
+    this.score = document.querySelector("#score p");
     this.EOGpannel = document.getElementById("EOG-pannel");
     this.EOGmessage = document.getElementById("msg");
     this.EOGscore = document.querySelector("#EOG-pannel h2 span");
 
     // playfield
     this.playfield = {
-      element: document.getElementById('playfield'),
+      element: document.getElementById("playfield"),
       columns: 10,
       rows: 10
     };
     
     this.cells = [];
 
+    // food Sprites
     this.foods = [];
   }
 
@@ -44,23 +49,20 @@ export class Game {
   }
 
   /**
-   * Generates the snake and Kiki sprites and places them on the board.
+   * Generates the Snake and Kiki sprites and places them on the board.
    */
   setUpSprites() {
     this.kiki = new Sprite(5, 1, "kiki", dir.right);
 
-    this.snake = new Snake(this.playfield, this.cells);
-    this.snake.grow(dir.left);
+    this.snake = new Snake();
+    this.snake.grow(dir.right);
   }
 
-  wts(f, x, y){
-    return f.x == x && f.y == y;
-  }
+
   /**
-   * Checks for collisions between the snake and kiki, the snake and food
-   * and kiki and food.
-   * @param {Snake} snakeObj - the snake, only used when we check collisions
-   *			     after a snake move.
+   * Checks for collisions between the Snake and Kiki, the Snake and food
+   * and Kiki and food.
+   * @param {boolean} sankeMove - Do we check collisions after a Snake move?
    */
   checkForCollisions(snakeMove=false) {
     for (let x of Array(this.playfield.columns).keys()){
@@ -129,11 +131,10 @@ export class Game {
   
   /**
    * Starts a game:
-   *    - set up the playfield grid,
-   *    - set up the sprites,
-   *    - set up the food and snake's intervals,
+   *    - set up the playfield grid and the sprites,
+   *    - set up the food generation and Snake targetting intervals,
    *    - display the gird.
-   * @returns {[Sprite, Snake]} The kiki and snake objects.
+   * @returns {[Sprite, Snake]} The Kiki and Snake objects.
    */
   start(){
     // setup
