@@ -5,37 +5,37 @@
  * @param {[Element]} cells - The playfield's cells.
  */
 function setCurveDirection(bodyPart, headDirection, cells) {
-  let curveDirection;
+    let curveDirection;
 
-  switch (bodyPart.dir){
-  case dir.left:
-    if (headDirection == dir.up)
-      curveDirection = dir.up;
-    if (headDirection == dir.down)
-      curveDirection = dir.right;
-    break;
-  case dir.right:
-    if (headDirection == dir.up)
-      curveDirection = dir.left;
-    if (headDirection == dir.down)
-      curveDirection = dir.down;
-    break;
-  case dir.up:
-    if (headDirection == dir.right)
-      curveDirection = dir.right;
-    else if (headDirection == dir.left)
-      curveDirection = dir.down;
-    break;
-  case dir.down:
-    if (headDirection == dir.left)
-      curveDirection = dir.left;
-    else if (headDirection == dir.right)
-      curveDirection = dir.up;
-    break;
-  }
+    switch (bodyPart.dir){
+    case dir.left:
+	if (headDirection == dir.up)
+	    curveDirection = dir.up;
+	if (headDirection == dir.down)
+	    curveDirection = dir.right;
+	break;
+    case dir.right:
+	if (headDirection == dir.up)
+	    curveDirection = dir.left;
+	if (headDirection == dir.down)
+	    curveDirection = dir.down;
+	break;
+    case dir.up:
+	if (headDirection == dir.right)
+	    curveDirection = dir.right;
+	else if (headDirection == dir.left)
+	    curveDirection = dir.down;
+	break;
+    case dir.down:
+	if (headDirection == dir.left)
+	    curveDirection = dir.left;
+	else if (headDirection == dir.right)
+	    curveDirection = dir.up;
+	break;
+    }
 
-  cells[bodyPart.y][bodyPart.x].setAttribute("direction", curveDirection);
-  bodyPart.dir = curveDirection;
+    cells[bodyPart.y][bodyPart.x].setAttribute("direction", curveDirection);
+    bodyPart.dir = curveDirection;
 }
 
 
@@ -45,21 +45,18 @@ function setCurveDirection(bodyPart, headDirection, cells) {
  * @param {[Sprite]} body - the snake's body.
  * @param {[Element]} cells - The playfield's cells.
  */
-  function setTailDirection(tail, body, cells) {
-  let direction = "";
-  let diffX = tail.x - body[body.length - 1].x;
-  let diffY = tail.y - body[body.length - 1].y;
+function setTailDirection(tail, body, cells) {
+    let direction = "";
+    let diffX = tail.x - body[body.length - 1].x;
+    let diffY = tail.y - body[body.length - 1].y;
 
-  if (diffX === 0)
-    direction = diffY > 0 ? dir.up : dir.down;
-  else if (diffY === 0)
-    direction = diffX > 0 ? dir.left : dir.right;
+    if (diffX === 0)
+	direction = diffY > 0 ? dir.up : dir.down;
+    else if (diffY === 0)
+	direction = diffX > 0 ? dir.left : dir.right;
 
-  cells[tail.y][tail.x].setAttribute("direction", direction);
-  tail.dir = direction;
-
-  // if (!cells[tail.y][tail.x].classList.contains('snake-tail'))
-  //   cells[tail.y][tail.x].classList.add('snake-tail');
+    cells[tail.y][tail.x].setAttribute("direction", direction);
+    tail.dir = direction;
 }
 
 
@@ -70,80 +67,97 @@ function setCurveDirection(bodyPart, headDirection, cells) {
  * @returns {Sprite}
  */
 function getClosestSprite(srcSprite, potentialTargets) {
-  let min = Infinity;
-  let deltaX = 0;
-  let deltaY = 0;
-  let closest;
+    let min = Infinity;
+    let deltaX = 0;
+    let deltaY = 0;
+    let closest;
 
-  for (const target of potentialTargets){
-    deltaX = Math.abs(srcSprite.x - target.x);
-    deltaY = Math.abs(srcSprite.y - target.y);
+    for (const target of potentialTargets){
+	deltaX = Math.abs(srcSprite.x - target.x);
+	deltaY = Math.abs(srcSprite.y - target.y);
 
-    if (deltaX + deltaY > min || (deltaX == 0 && deltaY == 0))
-      continue;
+	if (deltaX + deltaY > min || (deltaX == 0 && deltaY == 0))
+	    continue;
 
-    // we don't want to target food unless it's close by
-    if (target.type == "kiki" || deltaX + deltaY < 3){
-      min = deltaX + deltaY;
-      closest = target;
+	// we don't want to target food unless it's close by
+	if (target.type == "kiki" || deltaX + deltaY < 3){
+	    min = deltaX + deltaY;
+	    closest = target;
+	}
     }
-  }
 
-  return (closest);
+    return (closest);
 }
 
 
 /**
+ * Returns the cells around the snake's head that are free of snake parts.
+ * @param {Sprite} head - The snake's head.
+ * @param {[Element]} cells - The playfield's cells.
+ * @returns {[{x: number, y: number, dir: number}]} The free cells coordinates.
+ *  _____  _____  _____  _____
+ * |A .  ||A ^  ||A _  ||A_ _ |
+ * | / \ || / \ || ( ) ||( v )|
+ * |(_ _)|| \ / ||(_'_)|| \ / |
+ * |  |  ||  v  ||  |  ||  v  |
+ * |____V||____V||____V||____V|
+ */
+function getSurroundingFreeCells(head, cells, playfield) {
+    let surroundingCells = [];
+
+    if (head.x > 0)
+	surroundingCells.push({x: head.x - 1, y: head.y, dir: dir.left});
+    if (head.x < playfield.rows -1)
+	surroundingCells.push({x: head.x + 1, y: head.y, dir: dir.right});
+    if (head.y > 0)
+	surroundingCells.push({x: head.x, y: head.y - 1, dir: dir.up});
+    if (head.y < playfield.rows -1)
+	surroundingCells.push({x: head.x, y: head.y + 1, dir: dir.down});
+
+    let freeCells = surroundingCells.filter(cell => {
+	let classList = cells[cell.y][cell.x].classList.value;
+	return classList.match(/snake/) == null;
+    });
+
+    return freeCells;
+}
+
+/**
  * Computes and returns the next coordinates to reach to move the Snake closer
  * to the target.
- * @param {Sprite} target - the snake's target.
- * @param {Sprite} snakeHead - the snake's head.
+ * @param {Sprite} target - The snake's target.
+ * @param {Sprite} head - The snake's head.
  * @param {[Element]} cells - The playfield's cells.
  * @param {Object} playfield.
- * @returns { {x: number, y: number, dir: string} }
+ * @returns { {x: number, y: number, dir: string} } The coordinates and
+ *						direction of the next move,
+ *						or null if the snake is stuck.
  */
-function getNextCoordinates(target, snakeHead, cells, playfield) {
-  const dist2Target = { x: snakeHead.x - target.x, y: snakeHead.y - target.y };
-  let stepX = dist2Target.x > 0 ? snakeHead.x - 1 : snakeHead.x + 1;
-  let stepY = dist2Target.y > 0 ? snakeHead.y - 1 : snakeHead.y + 1;
-  let furthest = Math.abs(dist2Target.x) >= Math.abs(dist2Target.y) ? "x" : "y";
+function getNextCoordinates(target, head, cells, playfield) {
+    let freeCells = getSurroundingFreeCells(head, cells, playfield);
 
-  if (dist2Target.x == 0 && dist2Target.y == 0)
-    return null;
-  
-  // check if the snake can move along the x or y axis
-  let canMoveX, canMoveY = false;
-  let targetCellX = cells[snakeHead.y][stepX];
-  let targetCellY = cells[stepY][snakeHead.x];
+    if (!freeCells)
+	return null;
 
-  if (stepX < playfield.columns && !targetCellX.classList.value.match(/snake/))
-    canMoveX = true;
+    let targetCell = freeCells.find(cell => cell.x == target.x && cell.y == target.y);
+    if (targetCell)
+	return targetCell;
 
-  if (stepY < playfield.rows && !targetCellY.classList.value.match(/snake/))
-    canMoveY = true;
+    let closest = null;
+    let deltaX, deltaY = 0;
+    let min = Infinity;
+    for (const cell of freeCells){
+	deltaX = Math.abs(cell.x - target.x);
+	deltaY = Math.abs(cell.y - target.y);
 
-  if (!canMoveX && !canMoveY){
-    stepX = dist2Target.x < 0 ? snakeHead.x - 1 : snakeHead.x + 1;
-    stepY = dist2Target.y < 0 ? snakeHead.y - 1 : snakeHead.y + 1;
-    furthest = Math.abs(dist2Target.x) >= Math.abs(dist2Target.y) ? "x" : "y";
-    targetCellX = cells[snakeHead.y][stepX];
-    targetCellY = cells[stepY][snakeHead.x];
+	if (deltaX + deltaY > min || (deltaX == 0 && deltaY == 0))
+	    continue;
 
-    if (stepX < playfield.columns && !targetCellX.classList.value.match(/snake/))
-      canMoveX = true;
+	min = deltaX + deltaY;
+	closest = cell;
+    }
 
-    if (stepY < playfield.rows && !targetCellY.classList.value.match(/snake/))
-      canMoveY = true;
-  }
-
-  // determine next move
-  if (canMoveY && furthest == "x" || !canMoveY)
-    return ({ x: stepX, y: snakeHead.y, dir: dist2Target.x > 0 ? dir.left : dir.right});
-
-  else if (canMoveY)
-    return ({ x: snakeHead.x, y: stepY, dir: dist2Target.y > 0 ? dir.up : dir.down});
-
-  return null;
+    return closest;
 }
 
 
