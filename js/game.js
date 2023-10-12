@@ -11,7 +11,7 @@ export class Game {
     constructor(){
 	// DOM OBJECTS
 	this.startBtn = document.getElementById("start-btn");
-	this.score = document.querySelector("#score p");
+	this.score = document.querySelector("#score");
 	this.EOGpannel = document.getElementById("EOG-pannel");
 	this.EOGmessage = document.getElementById("msg");
 	this.EOGscore = document.querySelector("#EOG-pannel h2 span");
@@ -19,6 +19,7 @@ export class Game {
 	// playfield
 	this.playfield = {
 	    element: document.getElementById("playfield"),
+	    background: document.getElementById("playfield-background"),
 	    columns: 10,
 	    rows: 10
 	};
@@ -27,6 +28,22 @@ export class Game {
 
 	// food Sprites
 	this.foods = [];
+
+	this.setUpBackground();
+    }
+
+    setUpBackground() {
+	let backgrounds = ["grass", "white", "grass", "grass", "grass",
+			   "grass", "grass", "pink1", "grass", "grass", "pink2"];
+	for (let y = 0; y < 5; y++) {
+	    for (let x = 0; x < 5; x++){
+		let div = document.createElement("div");
+		let bg = backgrounds[getRandomNumber(0, 200) % 11];
+		div.classList.add(bg);
+
+		this.playfield.background.append(div);
+	    }
+	}
     }
 
     /**

@@ -1,49 +1,64 @@
-* DONE hide grid before play
-  CLOSED: [2022-08-10 Wed 10:51]
-* DONE make snake fcts into snake methods
-  CLOSED: [2022-08-10 Wed 12:13]
-* DONE make snake methods not rely on DOM
-  CLOSED: [2022-08-10 Wed 12:13]
-* DONE make collisions not rely on DOM
-  CLOSED: [2022-08-10 Wed 12:03]
-* DONE make lets consts when appropriate
-  CLOSED: [2022-08-10 Wed 12:27]
-* DONE use eventListeners instead of keydowns
-  CLOSED: [2022-08-10 Wed 12:27]
-* DONE give checkCollisions a more sensical return + fix game end msg
-  CLOSED: [2022-08-10 Wed 17:59]
-* DONE SNAKE MOVE
-  CLOSED: [2022-08-11 Thu 15:31]
-** DONE snake wrap
-   CLOSED: [2022-08-11 Thu 15:31]
-*** DONE head direction
-    CLOSED: [2022-08-10 Wed 10:00]
-*** DONE body direction
-    CLOSED: [2022-08-10 Wed 10:00]
-*** DONE body wrap
-    CLOSED: [2022-08-11 Thu 15:31]
-*** DONE limits
-    CLOSED: [2022-08-10 Wed 17:59]
-** DONE Path finding
+* 1st phase - August 22
+** DONE hide grid before play
+CLOSED: [2022-08-10 Wed 10:51]
+** DONE make snake fcts into snake methods
+CLOSED: [2022-08-10 Wed 12:13]
+** DONE make snake methods not rely on DOM
+CLOSED: [2022-08-10 Wed 12:13]
+** DONE make collisions not rely on DOM
+CLOSED: [2022-08-10 Wed 12:03]
+** DONE make lets consts when appropriate
+CLOSED: [2022-08-10 Wed 12:27]
+** DONE use eventListeners instead of keydowns
+CLOSED: [2022-08-10 Wed 12:27]
+** DONE give checkCollisions a more sensical return + fix game end msg
 CLOSED: [2022-08-10 Wed 17:59]
-* DONE snake cant reverse!
-  CLOSED: [2022-08-11 Thu 15:31]
-* DONE implement food
-  CLOSED: [2022-08-11 Thu 15:31]
-* DONE better collision checks --> in Sprite.move()
+** DONE SNAKE MOVE
+CLOSED: [2022-08-11 Thu 15:31]
+*** DONE snake wrap
+CLOSED: [2022-08-11 Thu 15:31]
+**** DONE head direction
+CLOSED: [2022-08-10 Wed 10:00]
+**** DONE body direction
+CLOSED: [2022-08-10 Wed 10:00]
+**** DONE body wrap
+CLOSED: [2022-08-11 Thu 15:31]
+**** DONE limits
+CLOSED: [2022-08-10 Wed 17:59]
+*** DONE Path finding
+CLOSED: [2022-08-10 Wed 17:59]
+** DONE snake cant reverse!
+CLOSED: [2022-08-11 Thu 15:31]
+** DONE implement food
+CLOSED: [2022-08-11 Thu 15:31]
+** DONE better collision checks --> in Sprite.move()
 CLOSED: [2023-10-05 jeu. 19:23]
-* DONE fix snake's init move()
-CLOSED: [2023-10-10 mar. 17:33]
-* DONE fix getNextcoordinates() --> backups
-CLOSED: [2023-10-12 jeu. 01:27]
-* DONE fix snake body bend and display
-CLOSED: [2023-10-10 mar. 17:33]
-* DONE fix snake eating
-CLOSED: [2023-10-08 dim. 15:31]
-* DONE restart button
-  CLOSED: [2023-10-03 mar. 11:34]
-* TODO refactor checkForcollisions() --> browse game's objects instead of cells
-* TODO fix grow() tail add --> find empty spot
 
-* TODO calculate optimal number of squares for screen
+
+* 2nd phase - October 23
+** DONE fix snake's init move()
+CLOSED: [2023-10-10 mar. 17:33]
+** DONE fix getNextcoordinates() --> backups
+CLOSED: [2023-10-12 jeu. 01:27]
+** DONE fix snake body bend and display
+CLOSED: [2023-10-10 mar. 17:33]
+** DONE fix snake eating
+CLOSED: [2023-10-08 dim. 15:31]
+** DONE restart button
+  CLOSED: [2023-10-03 mar. 11:34]
+** TODO refactor checkForcollisions() --> browse game's objects instead of cells
+** TODO fix grow() tail add --> find empty spot
+** TODO increase snake speed with time
+** TODO best score
+** TODO graphic re-do
+*** DONE better sprites
+CLOSED: [2023-10-12 jeu. 19:49]
+*** TODO dark/light mode
+*** DONE add background and decoration to playfield
+CLOSED: [2023-10-12 jeu. 19:50]
+*** TODO Fold controls
+*** TODO about page
+*** TODO responsive
+**** TODO calculate optimal number of squares for screen
+**** TODO mobile friendly
 

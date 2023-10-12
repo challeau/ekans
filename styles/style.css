@@ -1,7 +1,14 @@
 :root {
     --white: #F4F0EB;
-    --grey: #888C90;
-    --dark-grey: #363F47;
+    --grey: #859993;
+    --dark-grey: #414E4A;
+    --black: #1E2019;
+    --dark-mint: #40B088;
+    --mint: #70C8A0;
+    --light-mint: #88D8B8;
+    --pink: #C87098;
+    --dark-pink: #BA4B7D;
+
     --blue: #9EC0D5;
     --dark-blue: #518fb2;
     --yellow: #F5B83D;
@@ -16,20 +23,21 @@
 }
 
 body {
-    background-color: var(--blue);
+    background-color: var(--dark-grey);
+    color: var(--white);
     font-family: pixelmix, sans-serif;
 }
 
 h1 {
     font-family: MonsterFriendFore, sans-serif;
     font-size: 4em;
-    color: var(--dark-blue);
-    -webkit-text-stroke: 3px var(--dark-grey);
-    text-stroke: 3px var(--dark-grey);
+    color: var(--pink);
+    -webkit-text-stroke: 3px var(--white);
+    text-stroke: 3px var(--white);
 }
 
 h2 {
-    color: var(--dark-grey);
+    color: var(--light-mint);
 }
 
 footer {
@@ -80,14 +88,14 @@ footer {
 .annotation {
     position: absolute;
     bottom: 5.5vh;
-    color: var(--dark-grey);
+    color: var(--grey);
     font-size: 0.7em;
 }
 
 .kiki-portrait {
-    height: 7vh;
+    height: 10vh;
     position: absolute;
-    bottom: -1vh;
+    bottom: -2.5vh;
 }
 
 .food-pic {
@@ -115,20 +123,20 @@ footer {
 .controls .x-box {
     margin: auto;
     width: 55%;
-    color: var(--dark-grey);
+    color: var(--mint);
     font-size: 1.4em;
 }
 
 
-#start-btn {
-    width: 40%;
+#start-btn{
+    width: 35%;
     position: relative;
     top: 5vh;
     margin: auto;
 
     color: var(--white);
-    background-color: var(--dark-blue);
-    border: 16px solid var(--white);
+    background-color: var(--pink);
+    border: 13px solid var(--pink);
     border-image: url("./assets/start-blob.png") 30 stretch;
     border-radius: 50px;
 
@@ -143,46 +151,49 @@ footer {
     top: 4vh;
 }
 
-#score {
-    min-width: 1em;
+#score-box {
     position: absolute;
     top: 1em;
     right: 1em;
     padding: 1em;
+    margin-left: 1vw;
 
     color: var(--white);
-    text-align: center;
+    text-align: right;
+}
 
-    border: 15px solid var(--yellow);
-    border-image: url("./assets/score-blob.png") 25 stretch;
-    border-radius: 50px;
-    background-color: var(--yellow);
+#score {
+    color: var(--pink);
+    line-height: 2em;
+    font-size: 2em;
 }
 
 /* END OF GAME PANNEL */
 #EOG-pannel {
-    width: 87vh;
-    height: 87vh;
+    width: 85vh;
+    height: 85vh;
     margin: 1em;
     padding: 1em;
+    text-align: center;
     
     display: none;
-    
-    color: var(--red);
+
     border: 15px solid var(--grey);
     border-image: url("./assets/playfiled-blob.png") 30 stretch;
     border-radius: 50px;
-    background-color: var(--white);
+    background-color: rgba(64, 176, 136, 0.5);
+    z-index: 3;
 }
 
 #EOG-pannel h1 {
-    color: var(--red);
-    /* -webkit-text-stroke-color: var(--red); */
+    color: var(--dark-pink);
 }
 
 #EOG-pannel h2{
-    padding: 1em 5em;
+    padding: 1em;
     line-height: 1.5em;
+    color: var(--dark-grey);
+    font-size: 2.5em;
 }
 
 #final-score {
@@ -190,14 +201,54 @@ footer {
 }
 
 #final-score span {
-    color: var(--yellow);
+    color: var(--dark-pink);
     font-size: 2em;
     font-family: MonsterFriendFore, sans-serif;
-    -webkit-text-stroke: 3px var(--dark-grey);
-    text-stroke: 3px var(--dark-grey);
+    -webkit-text-stroke: 3px var(--white);
+    text-stroke: 3px var(--white);
 }
 
 /* PLAYFIELD */
+#playfield-background {
+    position: fixed;
+    right: 8.5vw;
+    z-index: 0;
+
+    width: 89vh;
+    height: 89vh;
+    background-color: var(--mint);
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 0;
+}
+
+
+.pink1 {
+    background-image: url("./assets/grassbg.png");
+    background-size: 200%;
+    background-position: top left;
+}
+
+.grass {
+    background-image: url("./assets/grassbg.png");
+    background-size: 200%;
+    background-position: top right;
+}
+
+.white {
+    background-image: url("./assets/grassbg.png");
+    background-size: 200%;
+    background-position: bottom left;
+}
+
+.pink2 {
+    background-image: url("./assets/grassbg.png");
+    background-size: 200%;
+    background-position: bottom right;
+}
+
 #playfield {
     width: 85vh;
     height: 85vh;
@@ -212,7 +263,7 @@ footer {
     border: 15px solid var(--grey);
     border-image: url("./assets/playfiled-blob.png") 30 stretch;
     border-radius: 50px;
-    background-color: var(--white);
+    z-index: 1;
 }
 
 #credits {
