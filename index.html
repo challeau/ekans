@@ -1,95 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-	<!-- General information -->
-	<title>EKANS</title>
-	<meta name="description" content="A reversed snake game.">
-	<meta name="author" content="challeau">
-	<meta charset="utf-8" />
-	<base href=""/>
+  <head>
+    <!-- General information -->
+    <title>EKANS</title>
+    <meta name="description" content="A reversed snake game.">
+    <meta name="author" content="challeau">
+    <meta charset="utf-8" />
+    <base href=""/>
 
-	<!-- Open Graph settings -->
-	<meta property="og:title" content="EKANS">
-	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://challeau.github.io/ekans">
-	<meta property="og:description" content="A reversed snake game.">
-	<meta property="og:image" content="./styles/favicon/favicon.ico">
+    <!-- Open Graph settings -->
+    <meta property="og:title" content="EKANS">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://challeau.github.io/ekans">
+    <meta property="og:description" content="A reversed snake game.">
+    <meta property="og:image" content="./styles/favicon/favicon.ico">
 
-	<!-- Viewport settings -->
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Viewport settings -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<!-- Link the stylesheet -->
-	<link rel="stylesheet" href="./styles/style.css" />
+    <!-- Link the stylesheet -->
+    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="stylesheet" href="./styles/sprite.css" />
 
-	<!-- Custom fonts -->
-	<link rel="stylesheet" href="./styles/fonts.css" />
+    <!-- Custom fonts -->
+    <link rel="stylesheet" href="./styles/fonts.css" />
 
-	<!-- Favicon -->
-	<link rel="icon" type="image/x-icon" href="./styles/favicon/favicon.ico">
-    </head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./styles/favicon/favicon.ico">
 
-    <body>
-	<div class="x-box main">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,1,0" />
 
-	    <div class="y-box presentation">
-		<div class="title">
-		    <h1>EKANS</h1>
-		    <h2>A reversed snake game.</h2>
-		</div>
+  </head>
 
-		<div class="manual">
-		    <p>Help <span class="y-box annoted-picture">
-			<span class="annotation">Kiki</span>
-			<img class="kiki-portrait" alt="kiki-portrait" src="./styles/assets/kiki-portrait.gif"/>
-		    </span> escape the mean snake!</p>
+  <body class="dark">
+    <div class="x-box main">
 
-		    <p>Earn points by eating
-			<span class="y-box annoted-picture">
-			    <span class="annotation">food</span>
-			    <span class="food-pics">
-				<img class="food-pic apple" alt="apple" src="./styles/assets/apple.gif"/>
-				<img class="food-pic carrot" alt="carrot" src="./styles/assets/carrot.gif"/>
-			    </span>
-			    
-			</span>
-			before the snake or he'll grow longer and longer...</p>
-
-		    <div class="controls">
-			<h3>> Controls</h3>
-
-			<div class="x-box">
-			    <img alt="arrow keys" src="./styles/assets/arrows.gif"/>
-			    <p>move</p>
-			</div>
-			
-		    </div>
-		</div>
-
-		<button id="start-btn">START</button>
-	    </div>
-
-	    <div id="playfield-background"></div>
-	    <div id="playfield"></div>
-
-	    <div id="score-box">
-	      > Score
-	      <p id="score">0</p>
-	    </div>
-
-	    <div id="EOG-pannel" class="y-box">
-		<h1>GAME OVER</h1>
-		<h2 id="msg"></h2>
-		<h2 id="final-score">Final score: <span>0</span>.</h2>
-	    </div>
+      <div class="y-box presentation">
+	<div class="title">
+	  <h1>EKANS</h1>
+	  <h2>A reversed snake game</h2>
 	</div>
 
-	<footer id="credits">
-	    <p>Made by challeau</p>
-	</footer>
+	<div class="manual">
+	  <p>Help <span class="y-box annoted-picture">
+	      <span class="annotation">Kiki</span>
+	      <img class="kiki-portrait" alt="kiki-portrait" src="./styles/assets/kiki-portrait.gif"/>
+	    </span> escape the mean snake!</p>
 
-	<script type="text/javascript">
-	  const dir = {down: 0, up: 1, left: 2, right: 3};
-	</script>
-	<script type="module" src="js/main.js"></script>
-    </body>
+	  <p>Earn points by eating
+	    <span class="y-box annoted-picture">
+	      <span class="annotation">food</span>
+	      <span class="food-pics">
+		<img class="food-pic apple" alt="apple" src="./styles/assets/apple.gif"/>
+		<img class="food-pic carrot" alt="carrot" src="./styles/assets/carrot.gif"/>
+	      </span>
+	      
+	    </span>
+	    before the snake or he'll grow longer and longer...</p>
+
+	  <div class="controls">
+	    <h3>> Controls</h3>
+
+	    <div class="x-box">
+	      <img alt="arrow keys" src="./styles/assets/arrows.gif"/>
+	      <p>move</p>
+	    </div>
+	    
+	  </div>
+	</div>
+
+	<button id="start-btn">START</button>
+      </div>
+
+      <div id="playfield-background"></div>
+      <div id="playfield"></div>
+
+      <div id="score-box">
+	> Score
+	<p id="score">0</p>
+      </div>
+
+      <div id="EOG-pannel" class="y-box">
+	<h1>GAME OVER</h1>
+	<h2 id="msg"></h2>
+	<h2 id="final-score">Final score: <span>0</span>.</h2>
+      </div>
+    </div>
+
+    <div class="mode-box x-box">
+      <span class="material-symbols-outlined mode">light_mode</span>
+      <span class="modeStr">Light mode</span>
+    </div>
+
+    <footer id="credits">
+      <p>Made by challeau</p>
+    </footer>
+
+    <script type="text/javascript"> const dir = {down: 0, up: 1, left: 2, right: 3}; </script>
+    <script type="module" src="js/main.js"></script>
+  </body>
 </html>

@@ -1,0 +1,73 @@
+/* FOOD */
+.apple {
+    background: url('./assets/apple.gif') no-repeat center;
+    background-size: contain;
+}
+
+.carrot {
+    background: url('./assets/carrot.gif') no-repeat center;
+    background-size: contain;
+}
+
+
+/* KIKI */
+.kiki {
+    background: url('./assets/kiki-sprite.png') no-repeat center;
+    background-position: top left;
+    background-size: 220%;
+}
+
+.kiki[direction='0']{	/* down */
+    background-position: bottom left;
+}
+
+.kiki[direction='1']{	/* up */
+    background-position: bottom right;
+}
+
+.kiki[direction='2']{	/* left */
+    background-position: top left;
+}
+
+.kiki[direction='3']{	/* right */
+    background-position: top right;
+}
+
+
+/* SNAKE */
+[class*='snake'] {
+    background: url('./assets/snake-sprite.png') no-repeat center;
+    background-size: 200%;
+}
+
+.snake-head {
+    background-position: top left;
+}
+
+.snake-tail {
+    background-position: bottom left;
+}
+
+.snake-body {
+    background-position: top right;
+}
+
+.snake-body[curve='true'] {
+    background-position: bottom right;
+}
+
+[class*='snake'][direction='0'] {	/* down */
+    transform: rotate(180deg);
+}
+
+[class*='snake'][direction='1'] {	/* up */
+    transform: rotate(0deg);
+}
+
+[class*='snake'][direction='2'] {	/* left */
+    transform: rotate(270deg);
+}
+
+[class*='snake'][direction='3'] {	/* right */
+    transform: rotate(90deg);
+}

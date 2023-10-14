@@ -4,6 +4,9 @@ import {Game} from "./game.js";
 let kiki, snake;
 let game = new Game();
 
+// Dark/light mode switch
+game.modeBtn.addEventListener("click", () => game.toggleMode());
+
 // Start button event
 game.startBtn.addEventListener("click", () => {
   if (game.playfield.element.childElementCount === 0){

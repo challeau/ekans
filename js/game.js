@@ -9,12 +9,17 @@ import {getRandomNumber, isCellEmpty} from "./utils.js";
  */
 export class Game {
     constructor(){
+	this.mode = "dark";
+
 	// DOM OBJECTS
 	this.startBtn = document.getElementById("start-btn");
 	this.score = document.querySelector("#score");
 	this.EOGpannel = document.getElementById("EOG-pannel");
 	this.EOGmessage = document.getElementById("msg");
 	this.EOGscore = document.querySelector("#EOG-pannel h2 span");
+	this.modeBtn = document.querySelector(".mode-box"); 
+	this.modeIcon = document.querySelector(".mode"); 
+	this.modeStr = document.querySelector(".modeStr"); 
 
 	// playfield
 	this.playfield = {
@@ -30,6 +35,13 @@ export class Game {
 	this.foods = [];
 
 	this.setUpBackground();
+    }
+
+    toggleMode() {
+	this.mode = this.mode === "dark" ? "light" : "dark";
+	document.querySelector("body").className = this.mode;
+	this.modeIcon.textContent = this.mode === "dark" ? "light_mode" : "dark_mode";
+	this.modeStr.textContent = this.mode === "dark" ? "Light mode" : "Dark mode";
     }
 
     setUpBackground() {

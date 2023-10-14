@@ -50,15 +50,13 @@ CLOSED: [2023-10-08 dim. 15:31]
 ** TODO fix grow() tail add --> find empty spot
 ** TODO increase snake speed with time
 ** TODO best score
+** TODO about page
 ** TODO graphic re-do
 *** DONE better sprites
 CLOSED: [2023-10-12 jeu. 19:49]
 *** TODO dark/light mode
 *** DONE add background and decoration to playfield
 CLOSED: [2023-10-12 jeu. 19:50]
-*** TODO Fold controls
-*** TODO about page
 *** TODO responsive
-**** TODO calculate optimal number of squares for screen
 **** TODO mobile friendly
 
