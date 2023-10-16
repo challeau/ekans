@@ -48,9 +48,9 @@ CLOSED: [2023-10-08 dim. 15:31]
   CLOSED: [2023-10-03 mar. 11:34]
 ** DONE refactor checkForcollisions() --> browse game's objects instead of cells
 CLOSED: [2023-10-16 lun. 14:33]
-** TODO fix grow() tail add --> find empty spot
-** TODO increase snake speed with time
-** TODO best score
+** fix grow() tail add --> find empty spot
+** DONE increase snake speed with time
+CLOSED: [2023-10-16 lun. 15:05]
 ** TODO about page
 ** TODO graphic re-do
 *** DONE better sprites

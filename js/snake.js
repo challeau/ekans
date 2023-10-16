@@ -51,6 +51,9 @@ export class Snake {
 
 	// set new tail direction
 	utils.setTailDirection(this.tail, this.body, game.cells);
+
+	// speed up the snake
+	game.speedModifier -= 0.5;
     }
 
     /**

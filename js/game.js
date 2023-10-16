@@ -9,6 +9,8 @@ import {getRandomNumber, isCellEmpty} from "./utils.js";
  */
 export class Game {
     constructor(){
+	this.speedModifier = 1;
+
 	// DOM OBJECTS
 	this.startBtn = document.getElementById("start-btn");
 	this.score = document.querySelector("#score");
@@ -145,6 +147,7 @@ export class Game {
 
 	clearInterval(this.snakeInterval);
 	clearInterval(this.foodInterval);
+	this.speedModifier = 1;
 
 	this.playfield.element.innerHTML = "";
 	this.playfield.element.style.display = "none";
@@ -158,7 +161,7 @@ export class Game {
 	if (outcome === 2)
 	    this.score.textContent = Number(this.score.textContent) + 200;
 
-	this.EOGscore.textContent = score.textContent;
+	this.EOGscore.textContent = this.score.textContent;
 	this.EOGmessage.textContent = msgs[outcome];
 	this.EOGpannel.style.display = "flex";
 	
@@ -190,12 +193,12 @@ export class Game {
 
 	    let newFood = new Sprite(x, y, foodType);
 	    this.foods.push(newFood);
-	}, getRandomNumber(2500, 3500));
+	}, getRandomNumber(2500, 3000));
 
 	this.snakeInterval = setInterval(() => {
 	    this.snake.autoTarget(this.kiki, this.foods);
 	    this.checkForCollisions(true);
-	}, 500);
+	}, 600 * this.speedModifier);
 
 	// playfield display
 	this.playfield.element.style.display = "grid";
