@@ -9,8 +9,6 @@ import {getRandomNumber, isCellEmpty} from "./utils.js";
  */
 export class Game {
     constructor(){
-	this.mode = "dark";
-
 	// DOM OBJECTS
 	this.startBtn = document.getElementById("start-btn");
 	this.score = document.querySelector("#score");
@@ -34,9 +32,14 @@ export class Game {
 	// food Sprites
 	this.foods = [];
 
+	// looks
 	this.setUpBackground();
+	this.mode = "dark";
     }
 
+    /**
+     * Toggle light/dark mode.
+     */
     toggleMode() {
 	this.mode = this.mode === "dark" ? "light" : "dark";
 	document.querySelector("body").className = this.mode;
@@ -44,6 +47,10 @@ export class Game {
 	this.modeStr.textContent = this.mode === "dark" ? "Light mode" : "Dark mode";
     }
 
+
+    /**
+     * Randomly assigns a background sprite to the playfield's background.
+     */
     setUpBackground() {
 	let backgrounds = ["grass", "white", "grass", "grass", "grass",
 			   "grass", "grass", "pink1", "grass", "grass", "pink2"];
@@ -94,35 +101,36 @@ export class Game {
      * @param {boolean} snakeMove - Do we check collisions after a Snake move?
      */
     checkForCollisions(snakeMove=false) {
-	for (let x of Array(this.playfield.columns).keys()){
-	    for (let y of Array(this.playfield.rows).keys()){
-		let classList = this.cells[y][x].classList.value;
-		let kikiMatch = classList.match(/kiki/);
-		let foodMatch = classList.match(/carrot|apple/);
-		let snakeMatch = classList.match(/snake-head|snake-tail|snake-body/g);
+	const observedObjs = [this.kiki, this.snake.head, ...this.snake.body,
+			      this.snake.tail, ...this.foods];
 
-		if (!kikiMatch && !foodMatch && !snakeMatch)
-		    continue;
+	for (let obj of observedObjs) {
+	    let classList = this.cells[obj.y][obj.x].classList.value;
+	    let kikiMatch = classList.match(/kiki/);
+	    let foodMatch = classList.match(/carrot|apple/);
+	    let snakeMatch = classList.match(/snake-head|snake-tail|snake-body/g);
 
-		if (foodMatch && (kikiMatch || snakeMatch)){
-		    if (kikiMatch){
-			let points = foodMatch == "apple" ? 10 : 20;
-			this.score.textContent = Number(score.textContent) + points;
-		    }
-		    else if (snakeMove)
-			this.snake.grow(this.snake.tail.dir);
+	    if (!kikiMatch && !foodMatch && !snakeMatch)
+		continue;
 
-		    let id = this.foods.findIndex(f => f.x == x && f.y == y);
-		    this.cells[y][x].classList.remove(foodMatch);
-		    this.foods = this.foods.toSpliced(id, 1);
+	    if (foodMatch && (kikiMatch || snakeMatch)){
+		if (kikiMatch){
+		    let points = foodMatch == "apple" ? 10 : 20;
+		    this.score.textContent = Number(this.score.textContent) + points;
 		}
+		else if (snakeMove)
+		    this.snake.grow(this.snake.tail.dir);
 
-		else if (kikiMatch && snakeMatch)
-		    this.end(0);
-
-		else if (snakeMove && snakeMatch && snakeMatch.length > 1)
-		    this.end(1);
+		let id = this.foods.findIndex(f => f.x == obj.x && f.y == obj.y);
+		this.cells[obj.y][obj.x].classList.remove(foodMatch);
+		this.foods = this.foods.toSpliced(id, 1);
 	    }
+
+	    else if (kikiMatch && snakeMatch)
+		this.end(0);
+
+	    else if (snakeMove && snakeMatch && snakeMatch.length > 1)
+		this.end(1);
 	}
     }
 
